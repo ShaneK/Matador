@@ -20,7 +20,6 @@ module.exports = function (app) {
                         }
                         redisModel.formatKeys(pendingJobs).then(function(keyList){
                             redisModel.getStatusCounts().then(function(countObject){
-                                console.log(countObject);
                                 res.render('jobList', { keys: keyList, counts: countObject, pending: true, type: "Pending" });
                             });
                         });
