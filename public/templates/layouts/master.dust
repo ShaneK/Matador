@@ -26,25 +26,17 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li><h3>Matador</h3></li>
-                <li {?overview}class="active"{/overview}><a href="#">Overview</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Analytics</a></li>
-                <li><a href="#">Export</a></li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="">Nav item</a></li>
-                <li><a href="">Nav item again</a></li>
-                <li><a href="">One more nav</a></li>
-                <li><a href="">Another nav item</a></li>
-                <li><a href="">More navigation</a></li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="">Nav item again</a></li>
-                <li><a href="">One more nav</a></li>
-                <li><a href="">Another nav item</a></li>
+                <li {?overview}class="active"{/overview}><a href="/">Overview</a></li>
+                <li {?complete}class="active"{/complete}><a href="/complete">Complete{?counts} ({counts.complete}){/counts}</a></li>
+                <li {?failed}class="active"{/failed}><a href="/failed">Failed{?counts} ({counts.failed}){/counts}</a></li>
+                <li {?active}class="active"{/active}><a href="/active">Active{?counts} ({counts.active}){/counts}</a></li>
+                <li {?pending}class="active"{/pending}><a href="/pending">Pending{?counts} ({counts.pending}){/counts}</a></li>
             </ul>
         </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         {+body /}
+        </div>
     </div>
 </div>
 

@@ -1,0 +1,31 @@
+{>"layouts/master" /}
+
+{<title}
+Matador
+{/title}
+
+{<body}
+<h1 class="page-header">{type}</h1>
+{?keys}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Type</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+{#keys}
+        <tr>
+            <td>{id}</td>
+            <td>{type}</td>
+            <td>{status}</td>
+        </tr>
+{/keys}
+        </tbody>
+    </table>
+</div>
+{/keys}
+{/body}

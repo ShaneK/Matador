@@ -1,14 +1,17 @@
 'use strict';
 
 
-var IndexModel = require('../models/index');
+var redisModel = require('../models/redis');
 
 
 module.exports = function (app) {
-
-    var model = new IndexModel();
     app.get('/', function (req, res) {
-        res.render('index', {keys: model.getKeys()});
+        redisModel.getAllKeys().then(function(keys){
+            redisModel.formatKeys(keys).then(function(keyList){
+                redisModel.getStatusCounts().then(function(countObject){
+                    res.render('index', { keys: keyList, counts: countObject, overview: true });
+                });
+            });
+        });
     });
-
 };
