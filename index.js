@@ -7,6 +7,7 @@ var kraken = require('kraken-js'),
 
 app.configure = function configure(nconf, next) {
     // Async method run on startup.
+//    console.log(nconf.get('redis'));
     next(null);
 };
 

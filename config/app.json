@@ -1,7 +1,11 @@
 {
 // "host": "localhost",
 //
-// "port": 8000,
+    "port": 80,
+    "redis": {
+        "host": "localhost",
+        "port": 1337
+    }
 //
 // "i18n": {
 //     "fallback": "en-US",
