@@ -1,10 +1,10 @@
 {
 // "host": "localhost",
 //
-    "port": 80,
+    "port": 1337,
     "redis": {
-        "host": "localhost",
-        "port": 1337
+        "host": "54.235.59.115",
+        "port": 6379
     }
 //
 // "i18n": {

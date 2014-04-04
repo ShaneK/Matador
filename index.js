@@ -2,12 +2,14 @@
 
 
 var kraken = require('kraken-js'),
-    app = {};
+    app = {},
+    redisAdapter = require(process.cwd()+'/lib/redisConnector.js'),
+    redisConnectionEnforcer = require(process.cwd()+'/lib/enforceConnection.js');
 
 
 app.configure = function configure(nconf, next) {
     // Async method run on startup.
-//    console.log(nconf.get('redis'));
+    redisAdapter.connect(nconf.get('redis'));
     next(null);
 };
 
@@ -18,7 +20,7 @@ app.requestStart = function requestStart(server) {
 
 
 app.requestBeforeRoute = function requestBeforeRoute(server) {
-    // Run before any routes have been added.
+    server.use(redisConnectionEnforcer());
 };
 
 
