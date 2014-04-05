@@ -5,12 +5,10 @@ Matador
 {/title}
 
 {<body}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1 class="page-header">Not Connected</h1>
-    <div>
-        <p>There was an error connecting to the redis server specified in the config file.<br />
-        Please check your config file and verify that your redis server is up and able to be connected to from this IP address.</p>
-        <p>After you have verified that you can connect to your server, refresh the page.</p>
-    </div>
+<h1 class="page-header">Not Connected</h1>
+<div>
+    <p>There was an error connecting to the redis server specified in the config file.<br />
+    Please check your config file and verify that your redis server is up and able to be connected to from this IP address.</p>
+    <p>After you have verified that you can connect to your server, refresh the page.</p>
 </div>
 {/body}
