@@ -113,6 +113,43 @@ var formatKeys = function(keys){
     return dfd.promise;
 };
 
+var makeJobInactiveById = function(id){
+    var dfd = q.defer();
+    redis.lrange("bull:video transcoding:active", 0, id, function(err, data){
+        dfd.resolve(data);
+    });
+    return dfd.promise;
+};
+
+var makeJobIncompleteById = function(id){
+    var dfd = q.defer();
+    redis.srem("bull:video transcoding:completed", id, function(err, data){
+        dfd.resolve(data);
+    });
+    return dfd.promise;
+};
+
+var makeJobNotFailedById = function(id){
+    var dfd = q.defer();
+    redis.srem("bull:video transcoding:failed", id, function(err, data){
+        dfd.resolve(data);
+    });
+    return dfd.promise;
+};
+
+var removeJobsById = function(list){
+    if(!(list instanceof Array)) list = [list];
+    getFullKeyNamesFromIds(list).then(function(jobs){
+        for(var i = 0, ii = jobs.length; i < ii; i++){
+            redis.del(jobs[i]);
+            //Brute force removal from state lists, slightly quicker than getting all state lists and searching for ID
+            makeJobInactiveById(list[i]);
+            makeJobIncompleteById(list[i]);
+            makeJobNotFailedById(list[i]);
+        }
+    });
+};
+
 module.exports.getActive = getActive; //Returns indexes of active jobs
 module.exports.getAllKeys = getAllKeys; //Returns all JOB keys in string form (ex: bull:video transcoding:101)
 module.exports.formatKeys = formatKeys; //Returns all keys in object form, with status applied to object. Ex: {id: 101, type: "video transcoding", status: "pending"}
@@ -120,3 +157,7 @@ module.exports.getCompleted = getCompleted; //Returns indexes of completed jobs
 module.exports.getFailed = getFailed; //Returns indexes of failed jobs
 module.exports.getStatusCounts = getStatusCounts; //Returns counts for different statuses
 module.exports.getJobsInList = getJobsInList; //Returns the job data from a list of job ids
+module.exports.removeJobsById = removeJobsById; //Removes one or more jobs by ID, also removes the job from any state list it's in
+module.exports.makeJobInactiveById = makeJobInactiveById; //Puts a job back into the pending state from active
+module.exports.makeJobIncompleteById = makeJobIncompleteById; //Puts a job back into the pending state from complete
+module.exports.makeJobNotFailedById = makeJobNotFailedById; //Puts a job back into the pending state from failed
