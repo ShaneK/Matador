@@ -1,2 +1,0 @@
-describe 'fixture', ->
-    it 'coffeescript', ->
