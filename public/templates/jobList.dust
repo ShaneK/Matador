@@ -5,7 +5,14 @@ Matador
 {/title}
 
 {<body}
-<h1 class="page-header">{type}</h1>
+<h1 class="page-header">{type} <span class="btn-group">
+        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+            <li><a href="#">Delete all {type} jobs</a></li>
+            {@if cond="'{type}'!='Pending'"}<li><a href="#">Revert all {type} jobs to Pending</a></li>{/if}
+        </ul>
+    </span>
+</h1>
 {?keys}
 <div class="table-responsive">
     <table class="table table-striped">

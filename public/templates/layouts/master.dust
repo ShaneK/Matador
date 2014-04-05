@@ -11,6 +11,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/master.css"/>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link rel="shortcut icon" href="/img/favicon.ico" />
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,7 +27,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li><h3>Matador</h3></li>
-                <li {?overview}class="active"{/overview}><a href="/">Overview</a></li>
+                <li {?overview}class="active"{/overview}><a href="/">Overview {?counts.stuck}<span style="color:red">({counts.stuck})</span>{/counts.stuck}</a></li>
                 <li {?complete}class="active"{/complete}><a href="/complete">Complete{?counts} ({counts.complete}){/counts}</a></li>
                 <li {?failed}class="active"{/failed}><a href="/failed">Failed{?counts} ({counts.failed}){/counts}</a></li>
                 <li {?active}class="active"{/active}><a href="/active">Active{?counts} ({counts.active}){/counts}</a></li>

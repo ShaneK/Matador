@@ -135,14 +135,17 @@ var getStatusCounts = function(){
         getStatus("complete").done(function(completed){
             getStatus("failed").done(function(failed){
                 getStatus("wait").done(function(pendingKeys){
-                    var countObject = {
-                        active: active.count,
-                        complete: completed.count,
-                        failed: failed.count,
-                        pending: pendingKeys.count,
-                        total: active.count+completed.count+failed.count+pendingKeys.count
-                    };
-                    dfd.resolve(countObject);
+                    getAllKeys().done(function(allKeys){
+                        var countObject = {
+                            active: active.count,
+                            complete: completed.count,
+                            failed: failed.count,
+                            pending: pendingKeys.count,
+                            total: allKeys.length,
+                            stuck: allKeys.length - (active.count+completed.count+failed.count+pendingKeys.count)
+                        };
+                        dfd.resolve(countObject);
+                    });
                 });
             });
         });
@@ -157,17 +160,20 @@ var formatKeys = function(keys){
     getStatus("failed").done(function(failedJobs){
         getStatus("complete").done(function(completedJobs){
             getStatus("active").done(function(activeJobs){
-                var keyList = [];
-                for(var i = 0, ii = keys.length; i < ii; i++){
-                    var explodedKeys = keys[i].split(":");
-                    var status = "pending";
-                    if(activeJobs.keys[explodedKeys[1]] && activeJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "active";
-                    else if(completedJobs.keys[explodedKeys[1]] && completedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "complete";
-                    else if(failedJobs.keys[explodedKeys[1]] && failedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "failed";
-                    keyList.push({id: explodedKeys[2], type: explodedKeys[1], status: status});
-                }
-                keyList = _.sortBy(keyList, function(key){return parseInt(key.id);});
-                dfd.resolve(keyList);
+                getStatus("wait").done(function(pendingJobs){
+                    var keyList = [];
+                    for(var i = 0, ii = keys.length; i < ii; i++){
+                        var explodedKeys = keys[i].split(":");
+                        var status = "stuck";
+                        if(activeJobs.keys[explodedKeys[1]] && activeJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "active";
+                        else if(completedJobs.keys[explodedKeys[1]] && completedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "complete";
+                        else if(failedJobs.keys[explodedKeys[1]] && failedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "failed";
+                        else if(pendingJobs.keys[explodedKeys[1]] && pendingJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "pending";
+                        keyList.push({id: explodedKeys[2], type: explodedKeys[1], status: status});
+                    }
+                    keyList = _.sortBy(keyList, function(key){return parseInt(key.id);});
+                    dfd.resolve(keyList);
+                });
             });
         });
     });

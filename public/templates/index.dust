@@ -30,7 +30,7 @@ Matador
     </div>
 </div>
 {?keys}
-<h2 class="sub-header">Jobs</h2>
+<h2 class="sub-header">Stuck Jobs</h2>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -45,7 +45,7 @@ Matador
         <tr>
             <td>{id}</td>
             <td>{type}</td>
-            <td>{status}</td>
+            <td style="color: red">{status}</td>
         </tr>
 {/keys}
         </tbody>
