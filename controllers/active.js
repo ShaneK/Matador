@@ -10,7 +10,12 @@ module.exports = function (app) {
             redisModel.getJobsInList(active).done(function(keys){
                 redisModel.formatKeys(keys).done(function(keyList){
                     redisModel.getStatusCounts().done(function(countObject){
-                        res.render('jobList', { keys: keyList, counts: countObject, active: true, type: "Active" });
+                        var model = { keys: keyList, counts: countObject, active: true, type: "Active" };
+                        if(req.xhr){
+                            res.json(model);
+                        }else{
+                            res.render('jobList', model);
+                        }
                     });
                 });
             });
