@@ -38,6 +38,7 @@ Matador
             <th>Id</th>
             <th>Type</th>
             <th>Status</th>
+            <th>Options</th>
         </tr>
         </thead>
         <tbody>
@@ -46,6 +47,15 @@ Matador
             <td>{id}</td>
             <td>{type}</td>
             <td style="color: red">{status}</td>
+            <td>
+                <span class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Delete job</a></li>
+                        <li><a href="#">Revert job to pending</a></li>
+                    </ul>
+                </span>
+            </td>
         </tr>
 {/keys}
         </tbody>

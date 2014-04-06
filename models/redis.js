@@ -35,6 +35,25 @@ var getWaitingKeys = function(){
     return dfd.promise;
 };
 
+var getStuckKeys = function(){
+    var dfd = q.defer();
+    //TODO: Find better way to do this. Being lazy at the moment.
+    getAllKeys().done(function(keys){
+        formatKeys(keys).done(function(keyList){
+            keyList = _.filter(keyList, function(key){ return key.status === "stuck"; });
+            var results = {};
+            var count = 0;
+            for(var i = 0, ii = keyList.length; i < ii; i++){
+                if(!results[keyList[i].type]) results[keyList[i].type] = [];
+                results[keyList[i].type].push(keyList[i].id);
+                count++;
+            }
+            dfd.resolve({keys: results, count: count});
+        });
+    });
+    return dfd.promise;
+};
+
 var getStatus = function(status){
     var dfd = q.defer();
     var getStatusKeysFunction = null;
@@ -46,6 +65,8 @@ var getStatus = function(status){
         getStatusKeysFunction = getFailedKeys;
     }else if(status === "wait"){
         getStatusKeysFunction = getWaitingKeys;
+    }else if(status === "stuck"){
+        return getStuckKeys();
     }else{
         console.log("UNSUPPORTED STATUS:", status);
         return;
@@ -180,30 +201,6 @@ var formatKeys = function(keys){
     return dfd.promise;
 };
 
-var makeJobInactiveById = function(id){
-    var dfd = q.defer();
-    redis.lrem("bull:video transcoding:active", 0, id, function(err, data){
-        dfd.resolve(data);
-    });
-    return dfd.promise;
-};
-
-var makeJobIncompleteById = function(id){
-    var dfd = q.defer();
-    redis.srem("bull:video transcoding:completed", id, function(err, data){
-        dfd.resolve(data);
-    });
-    return dfd.promise;
-};
-
-var makeJobNotFailedById = function(id){
-    var dfd = q.defer();
-    redis.srem("bull:video transcoding:failed", id, function(err, data){
-        dfd.resolve(data);
-    });
-    return dfd.promise;
-};
-
 var removeJobs = function(list){
     if(!list) return;
     //Expects {id: 123, type: "video transcoding"}
@@ -220,9 +217,41 @@ var removeJobs = function(list){
     redis.multi(multi).exec();
 };
 
+var makePendingByType = function(type){
+    type = type.toLowerCase();
+    var validTypes = ['active', 'complete', 'failed', 'wait']; //I could add stuck, but I won't support mass modifying "stuck" jobs because it's very possible for things to be in a "stuck" state temporarily, while transitioning between states
+    var dfd = q.defer();
+    if(validTypes.indexOf(type) === -1) dfd.resolve({success:false, message:"Invalid type: "+type+" not in list of supported types"});
+    getStatus(type).done(function(allKeys){
+        var multi = [];
+        var allKeyObjects = Object.keys(allKeys.keys);
+        for(var i = 0, ii = allKeyObjects.length; i < ii; i++){
+            var firstPartOfKey = "bull:"+allKeyObjects[i]+":";
+            for(var k = 0, kk = allKeys.keys[allKeyObjects[i]].length; k < kk; k++){
+                var item = allKeys.keys[allKeyObjects[i]][k];
+                //Brute force remove from everything
+                multi.push(["lrem", firstPartOfKey+"active", 0, item]);
+                multi.push(["srem", firstPartOfKey+"completed", item]);
+                multi.push(["srem", firstPartOfKey+"failed", item]);
+                //Add to pending
+                multi.push(["rpush", firstPartOfKey+"wait", item]);
+            }
+        }
+        redis.multi(multi).exec(function(err, data){
+            if(err){
+                dfd.resolve({success: false, message: err});
+            }else{
+                dfd.resolve({success: true, message: "Success!"});
+            }
+        });
+    });
+    return dfd.promise;
+}
+
 module.exports.getAllKeys = getAllKeys; //Returns all JOB keys in string form (ex: bull:video transcoding:101)
 module.exports.formatKeys = formatKeys; //Returns all keys in object form, with status applied to object. Ex: {id: 101, type: "video transcoding", status: "pending"}
 module.exports.getStatus = getStatus; //Returns indexes of completed jobs
 module.exports.getStatusCounts = getStatusCounts; //Returns counts for different statuses
 module.exports.getJobsInList = getJobsInList; //Returns the job data from a list of job ids
 module.exports.removeJobs = removeJobs; //Removes one or  more jobs by ID, also removes the job from any state list it's in
+module.exports.makePendingByType = makePendingByType; //Makes all jobs in a specific status pending

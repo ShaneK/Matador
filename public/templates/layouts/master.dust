@@ -11,7 +11,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/master.css"/>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/font-awesome.css" rel="stylesheet">
     <link rel="shortcut icon" href="/img/favicon.ico" />
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -27,7 +27,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li><h3>Matador</h3></li>
-                <li {?overview}class="active"{/overview}><a href="/">Overview {?counts.stuck}<span style="color:red">({counts.stuck})</span>{/counts.stuck}</a></li>
+                <li {?overview}class="active"{/overview}><a href="/">Overview{@if cond="parseInt({counts.stuck})>0"} <span style="color:red">({counts.stuck})</span>{/if}</a></li>
                 <li {?complete}class="active"{/complete}><a href="/complete">Complete{?counts} ({counts.complete}){/counts}</a></li>
                 <li {?failed}class="active"{/failed}><a href="/failed">Failed{?counts} ({counts.failed}){/counts}</a></li>
                 <li {?active}class="active"{/active}><a href="/active">Active{?counts} ({counts.active}){/counts}</a></li>
@@ -42,7 +42,9 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="/js/jquery.blockUI.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/holder.js"></script>
+<script src="/js/app.js"></script>
 </body>
 </html>
