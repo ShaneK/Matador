@@ -246,7 +246,84 @@ var makePendingByType = function(type){
         });
     });
     return dfd.promise;
-}
+};
+
+var makePendingById = function(type, id){
+    var dfd = q.defer();
+    if(!id) dfd.resolve({success: false, message: "There was no ID provided."});
+    if(!type) dfd.resolve({success: false, message: "There was no type provided."});
+
+    var firstPartOfKey = "bull:"+type+":";
+    var multi = [];
+    multi.push(["lrem", firstPartOfKey+"active", 0, id]);
+    multi.push(["lrem", firstPartOfKey+"wait", 0, id]);
+    multi.push(["srem", firstPartOfKey+"completed", id]);
+    multi.push(["srem", firstPartOfKey+"failed", id]);
+    //Add to pending
+    multi.push(["rpush", firstPartOfKey+"wait", id]);
+    redis.multi(multi).exec(function(err, data){
+        if(err){
+            dfd.resolve({success: false, message: err});
+        }else{
+            dfd.resolve({success: true, message: "Success!"});
+        }
+    });
+    return dfd.promise;
+};
+
+var deleteJobByStatus = function(type){
+    type = type.toLowerCase();
+    var validTypes = ['active', 'complete', 'failed', 'wait']; //I could add stuck, but I won't support mass modifying "stuck" jobs because it's very possible for things to be in a "stuck" state temporarily, while transitioning between states
+    var dfd = q.defer();
+    if(validTypes.indexOf(type) === -1) dfd.resolve({success:false, message:"Invalid type: "+type+" not in list of supported types"});
+    getStatus(type).done(function(allKeys){
+        var multi = [];
+        var allKeyObjects = Object.keys(allKeys.keys);
+        for(var i = 0, ii = allKeyObjects.length; i < ii; i++){
+            var firstPartOfKey = "bull:"+allKeyObjects[i]+":";
+            for(var k = 0, kk = allKeys.keys[allKeyObjects[i]].length; k < kk; k++){
+                var item = allKeys.keys[allKeyObjects[i]][k];
+                //Brute force remove from everything
+                multi.push(["lrem", firstPartOfKey+"active", 0, item]);
+                multi.push(["lrem", firstPartOfKey+"wait", 0, item]);
+                multi.push(["srem", firstPartOfKey+"completed", item]);
+                multi.push(["srem", firstPartOfKey+"failed", item]);
+                multi.push(["del", firstPartOfKey+item]);
+            }
+        }
+        redis.multi(multi).exec(function(err, data){
+            if(err){
+                dfd.resolve({success: false, message: err});
+            }else{
+                dfd.resolve({success: true, message: "Success!"});
+            }
+        });
+    });
+    return dfd.promise;
+};
+
+var deleteJobById = function(type, id){
+    var dfd = q.defer();
+    if(!id) dfd.resolve({success: false, message: "There was no ID provided."});
+    if(!type) dfd.resolve({success: false, message: "There was no type provided."});
+
+    var firstPartOfKey = "bull:"+type+":";
+    var multi = [];
+    multi.push(["lrem", firstPartOfKey+"active", 0, id]);
+    multi.push(["lrem", firstPartOfKey+"wait", 0, id]);
+    multi.push(["srem", firstPartOfKey+"completed", id]);
+    multi.push(["srem", firstPartOfKey+"failed", id]);
+    multi.push(["del", firstPartOfKey+id]);
+    redis.multi(multi).exec(function(err, data){
+        if(err){
+            dfd.resolve({success: false, message: err});
+        }else{
+            dfd.resolve({success: true, message: "Success!"});
+        }
+    });
+    return dfd.promise;
+};
+
 
 module.exports.getAllKeys = getAllKeys; //Returns all JOB keys in string form (ex: bull:video transcoding:101)
 module.exports.formatKeys = formatKeys; //Returns all keys in object form, with status applied to object. Ex: {id: 101, type: "video transcoding", status: "pending"}
@@ -255,3 +332,6 @@ module.exports.getStatusCounts = getStatusCounts; //Returns counts for different
 module.exports.getJobsInList = getJobsInList; //Returns the job data from a list of job ids
 module.exports.removeJobs = removeJobs; //Removes one or  more jobs by ID, also removes the job from any state list it's in
 module.exports.makePendingByType = makePendingByType; //Makes all jobs in a specific status pending
+module.exports.makePendingById = makePendingById; //Makes a job with a specific ID pending, requires the type of job as the first parameter and ID as second.
+module.exports.deleteJobByStatus = deleteJobByStatus; //Deletes all jobs in a specific status
+module.exports.deleteJobById = deleteJobById; //Deletes a job by ID. Requires type as the first parameter and ID as the second.

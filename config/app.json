@@ -3,7 +3,7 @@
 //
     "port": 1337,
     "redis": {
-        "host": "50.19.6.159",
+        "host": "localhost",
         "port": 6379
     }
 //
