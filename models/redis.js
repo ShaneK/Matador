@@ -221,7 +221,11 @@ var makePendingByType = function(type){
     type = type.toLowerCase();
     var validTypes = ['active', 'complete', 'failed', 'wait']; //I could add stuck, but I won't support mass modifying "stuck" jobs because it's very possible for things to be in a "stuck" state temporarily, while transitioning between states
     var dfd = q.defer();
-    if(validTypes.indexOf(type) === -1) dfd.resolve({success:false, message:"Invalid type: "+type+" not in list of supported types"});
+    console.log(validTypes.indexOf(type));
+    if(validTypes.indexOf(type) === -1) {
+        dfd.resolve({success:false, message:"Invalid type: "+type+" not in list of supported types"});
+        return dfd.promise;
+    }
     getStatus(type).done(function(allKeys){
         var multi = [];
         var allKeyObjects = Object.keys(allKeys.keys);
@@ -241,7 +245,7 @@ var makePendingByType = function(type){
             if(err){
                 dfd.resolve({success: false, message: err});
             }else{
-                dfd.resolve({success: true, message: "Success!"});
+                dfd.resolve({success: true, message: "Successfully made all " + type + " jobs pending."});
             }
         });
     });
@@ -265,7 +269,7 @@ var makePendingById = function(type, id){
         if(err){
             dfd.resolve({success: false, message: err});
         }else{
-            dfd.resolve({success: true, message: "Success!"});
+            dfd.resolve({success: true, message: "Successfully made "+type+" job #"+id+" pending."});
         }
     });
     return dfd.promise;
@@ -275,7 +279,10 @@ var deleteJobByStatus = function(type){
     type = type.toLowerCase();
     var validTypes = ['active', 'complete', 'failed', 'wait']; //I could add stuck, but I won't support mass modifying "stuck" jobs because it's very possible for things to be in a "stuck" state temporarily, while transitioning between states
     var dfd = q.defer();
-    if(validTypes.indexOf(type) === -1) dfd.resolve({success:false, message:"Invalid type: "+type+" not in list of supported types"});
+    if(validTypes.indexOf(type) === -1) {
+        dfd.resolve({success:false, message:"Invalid type: "+type+" not in list of supported types"});
+        return dfd.promise;
+    }
     getStatus(type).done(function(allKeys){
         var multi = [];
         var allKeyObjects = Object.keys(allKeys.keys);
@@ -295,7 +302,7 @@ var deleteJobByStatus = function(type){
             if(err){
                 dfd.resolve({success: false, message: err});
             }else{
-                dfd.resolve({success: true, message: "Success!"});
+                dfd.resolve({success: true, message: "Successfully deleted all jobs of status " + type +"."});
             }
         });
     });
@@ -318,7 +325,7 @@ var deleteJobById = function(type, id){
         if(err){
             dfd.resolve({success: false, message: err});
         }else{
-            dfd.resolve({success: true, message: "Success!"});
+            dfd.resolve({success: true, message: "Successfully deleted job "+type+" #"+id+"."});
         }
     });
     return dfd.promise;

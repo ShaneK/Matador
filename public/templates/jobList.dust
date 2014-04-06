@@ -8,8 +8,8 @@ Matador
 <h1 class="page-header">{type} <span class="btn-group">
         <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
         <ul class="dropdown-menu">
-            <li><a href="#">Delete all {type} jobs</a></li>
-            {@if cond="'{type}'!='Pending'"}<li><a href="#">Revert all {type} jobs to Pending</a></li>{/if}
+            <li><a href="#" onclick="deleteByStatus('{type}');">Delete all {type} jobs</a></li>
+            {@if cond="'{type}'!='Pending'"}<li><a href="#" onclick="pendingByStatus('{type}');">Revert all {type} jobs to Pending</a></li>{/if}
         </ul>
     </span>
 </h1>
