@@ -14,7 +14,9 @@ var notyConfirm = function(message, cb){
     noty({text: message, type: 'alert', layout: 'center', buttons: buttons, modal: true});
 };
 
-var deleteById = function(type, id){
+var deleteById = function(o){
+    var id = o.id;
+    var type = o.type;
     notyConfirm("Are you sure you want to delete the job of type "+ type + " with ID #"+id+"?", function(){
         blockUI();
         $.getJSON("/jobs/delete/id/"+type+"/"+id).done(function(response){
@@ -45,8 +47,10 @@ var deleteByStatus = function(status){
     });
 };
 
-var pendingById = function(type, id){
-    notyConfirm("Are you sure you want make the job of type "+ type + " with ID #"+id+" pending? This put this job in the queue to be run again.", function(){
+var pendingById = function(o){
+    var id = o.id;
+    var type = o.type;
+    notyConfirm("Are you sure you want make the job of type "+ type + " with ID #"+id+" pending? This will put this job in the queue to be run again.", function(){
         blockUI();
         $.getJSON("/jobs/pending/id/"+type+"/"+id).done(function(response){
             handleAjaxResponse(response);

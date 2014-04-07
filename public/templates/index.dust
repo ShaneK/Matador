@@ -31,7 +31,7 @@ Matador
 </div>
 {?keys}
 <h2 class="sub-header">Stuck Jobs</h2>
-<div class="table-responsive">
+<div class="table-responsive" data-bind="visible: keys().length > 0">
     <table class="table table-striped">
         <thead>
         <tr>
@@ -41,23 +41,21 @@ Matador
             <th>Options</th>
         </tr>
         </thead>
-        <tbody>
-{#keys}
+        <tbody data-bind="foreach: keys">
         <tr>
-            <td>{id}</td>
-            <td>{type}</td>
-            <td style="color: red">{status}</td>
+            <td data-bind="text: id"></td>
+            <td data-bind="text: type"></td>
+            <td data-bind="text: status"></td>
             <td>
                 <span class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Delete job</a></li>
-                        <li><a href="#">Revert job to pending</a></li>
+                        <li><a href="#" data-bind="click: deleteById">Delete job</a></li>
+                        <li><a href="#" data-bind="click: pendingById">Revert job to pending</a></li>
                     </ul>
                 </span>
             </td>
         </tr>
-{/keys}
         </tbody>
     </table>
 </div>

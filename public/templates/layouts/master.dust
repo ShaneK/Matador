@@ -26,11 +26,11 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li><h3>Matador</h3></li>
-                <li {?overview}class="active"{/overview}><a href="/">Overview{@if cond="parseInt({counts.stuck})>0"} <span style="color:red">({counts.stuck})</span>{/if}</a></li>
-                <li {?complete}class="active"{/complete}><a href="/complete">Complete{?counts} ({counts.complete}){/counts}</a></li>
-                <li {?failed}class="active"{/failed}><a href="/failed">Failed{?counts} ({counts.failed}){/counts}</a></li>
-                <li {?active}class="active"{/active}><a href="/active">Active{?counts} ({counts.active}){/counts}</a></li>
-                <li {?pending}class="active"{/pending}><a href="/pending">Pending{?counts} ({counts.pending}){/counts}</a></li>
+                <li {?overview}class="active"{/overview}><a href="/">Overview<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
+                <li {?complete}class="active"{/complete}><a href="/complete">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
+                <li {?failed}class="active"{/failed}><a href="/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
+                <li {?active}class="active"{/active}><a href="/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
+                <li {?pending}class="active"{/pending}><a href="/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
             </ul>
         </div>
 
@@ -41,10 +41,31 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="/js/knockout.min.js"></script>
 <script src="/js/jquery.blockUI.js"></script>
 <script src="/js/jquery.noty.packaged.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/holder.js"></script>
 <script src="/js/app.js"></script>
+
+<script type="text/javascript">
+    var keys = ko.observableArray([]);
+    {#keys}
+    keys.push({id: "{id}", type: "{type}", status: "{status}"});
+    {/keys}
+    var DataModel = {
+        complete: ko.observable({?counts}" ("+{counts.complete}+")"{:else}null{/counts}),
+        failed: ko.observable({?counts}" ("+{counts.failed}+")"{:else}null{/counts}),
+        active: ko.observable({?counts}" ("+{counts.active}+")"{:else}null{/counts}),
+        pending: ko.observable({?counts}" ("+{counts.pending}+")"{:else}null{/counts}),
+        stuck: ko.observable({?counts}" ("+{counts.stuck}+")"{:else}null{/counts}),
+        keys: keys
+    };
+
+    $(document).on('ready', function(){
+        ko.applyBindings(DataModel);
+    });
+</script>
+
 </body>
 </html>
