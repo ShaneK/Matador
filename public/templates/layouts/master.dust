@@ -83,11 +83,35 @@
         active: ko.observable({?counts}" ("+{counts.active}+")"{:else}null{/counts}),
         pending: ko.observable({?counts}" ("+{counts.pending}+")"{:else}null{/counts}),
         stuck: ko.observable({?counts}" ("+{counts.stuck}+")"{:else}null{/counts}),
-        keys: keys
+        keys: keys,
+        autoRefresh: ko.observable(true),
+        autoRefreshId: null,
+        refreshViewModel: function(force){
+            var refresh = function(){
+                if(DataModel.autoRefresh()){
+                    $.ajax().done(function(data){
+                        DataModel.complete(" ("+data.counts.complete+")");
+                        DataModel.failed(" ("+data.counts.failed+")");
+                        DataModel.active(" ("+data.counts.active+")");
+                        DataModel.pending(" ("+data.counts.pending+")");
+                        DataModel.stuck(" ("+data.counts.stuck+")");
+                        DataModel.keys(data.keys);
+                    });
+                }
+            };
+            if(force){
+                clearInterval(DataModel.autoRefreshId);
+                refresh();
+                DataModel.autoRefreshId = setInterval(refresh, 2000);
+            }else{
+                DataModel.autoRefreshId = setInterval(refresh, 2000);
+            }
+        }
     };
 
     $(document).on('ready', function(){
         ko.applyBindings(DataModel);
+        DataModel.refreshViewModel();
     });
 </script>
 

@@ -20,7 +20,7 @@ Matador
             <th>Id</th>
             <th>Type</th>
             <th>Status</th>
-            <th>Options</th>
+            <th>Manage</th>
         </tr>
         </thead>
         <tbody data-bind="foreach: keys">
@@ -29,13 +29,12 @@ Matador
             <td data-bind="text: type"></td>
             <td data-bind="text: status"></td>
             <td>
-                <span class="btn-group">
-                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#" data-bind="click: deleteById">Delete job</a></li>
-                        <li data-bind="visible: '{type}' !== 'Pending'"><a href="#" data-bind="click: pendingById">Revert job to pending</a></li>
-                    </ul>
-                </span>
+                <button class="btn btn-default" data-bind="click: deleteById">
+                    <i class="fa fa-trash-o"></i>
+                </button>&nbsp;
+                <button class="btn btn-default" data-bind="visible: '{type}' !== 'Pending', click: pendingById">
+                    <i class="fa fa-repeat"></i>
+                </button>
             </td>
         </tr>
         </tbody>

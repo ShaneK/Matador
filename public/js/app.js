@@ -21,6 +21,7 @@ var deleteById = function(o){
         blockUI();
         $.getJSON("/jobs/delete/id/"+type+"/"+id).done(function(response){
             handleAjaxResponse(response);
+            DataModel.refreshViewModel(true);
         }).always(function(){
             $.unblockUI();
         });
@@ -41,6 +42,7 @@ var deleteByStatus = function(status){
                 response.message = response.message.replace(status, statusDisplay);
             }
             handleAjaxResponse(response);
+            DataModel.refreshViewModel(true);
         }).always(function(){
             $.unblockUI();
         });
@@ -54,6 +56,7 @@ var pendingById = function(o){
         blockUI();
         $.getJSON("/jobs/pending/id/"+type+"/"+id).done(function(response){
             handleAjaxResponse(response);
+            DataModel.refreshViewModel(true);
         }).always(function(){
             $.unblockUI();
         });
@@ -74,6 +77,7 @@ var pendingByStatus = function(status){
                 response.message = response.message.replace(status, statusDisplay);
             }
             handleAjaxResponse(response);
+            DataModel.refreshViewModel(true);
         }).always(function(){
             $.unblockUI();
         });
