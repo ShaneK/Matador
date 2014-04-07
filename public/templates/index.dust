@@ -47,10 +47,10 @@ Matador
             <td data-bind="text: type"></td>
             <td data-bind="text: status" style="color: red"></td>
             <td>
-                <button class="btn btn-default" data-bind="click: deleteById">
+                <button class="btn btn-default" data-bind="click: deleteById" title="Delete">
                     <i class="fa fa-trash-o"></i>
                 </button>&nbsp;
-                <button class="btn btn-default" data-bind="visible: '{type}' !== 'Pending', click: pendingById">
+                <button class="btn btn-default" data-bind="visible: '{type}' !== 'Pending', click: pendingById" title="Revert to pending">
                     <i class="fa fa-repeat"></i>
                 </button>
             </td>
