@@ -29,34 +29,34 @@ Matador
         <span class="text-muted">Something else</span>
     </div>
 </div>
-{?keys}
-<h2 class="sub-header">Stuck Jobs</h2>
-<div class="table-responsive" data-bind="visible: keys().length > 0">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Manage</th>
-        </tr>
-        </thead>
-        <tbody data-bind="foreach: keys">
-        <tr>
-            <td data-bind="text: id"></td>
-            <td data-bind="text: type"></td>
-            <td data-bind="text: status" style="color: red"></td>
-            <td>
-                <button class="btn btn-default" data-bind="click: deleteById" title="Delete">
-                    <i class="fa fa-trash-o"></i>
-                </button>&nbsp;
-                <button class="btn btn-default" data-bind="visible: '{type}' !== 'Pending', click: pendingById" title="Revert to pending">
-                    <i class="fa fa-repeat"></i>
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div data-bind="visible: keys().length > 0">
+    <h2 class="sub-header">Stuck Jobs</h2>
+    <div class="table-responsive" data-bind="visible: keys().length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Manage</th>
+            </tr>
+            </thead>
+            <tbody data-bind="foreach: keys">
+            <tr>
+                <td data-bind="text: id"></td>
+                <td data-bind="text: type"></td>
+                <td data-bind="text: status" style="color: red"></td>
+                <td>
+                    <button class="btn btn-default" data-bind="click: deleteById" title="Delete">
+                        <i class="fa fa-trash-o"></i>
+                    </button>&nbsp;
+                    <button class="btn btn-default" data-bind="visible: '{type}' !== 'Pending', click: pendingById" title="Revert to pending">
+                        <i class="fa fa-repeat"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-{/keys}
 {/body}
