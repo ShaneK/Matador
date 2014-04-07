@@ -89,7 +89,7 @@
         refreshViewModel: function(force){
             var refresh = function(){
                 if(DataModel.autoRefresh()){
-                    $.ajax().done(function(data){
+                    $.getJSON("/api"+window.location.pathname).done(function(data){
                         DataModel.complete(" ("+data.counts.complete+")");
                         DataModel.failed(" ("+data.counts.failed+")");
                         DataModel.active(" ("+data.counts.active+")");
@@ -102,10 +102,8 @@
             if(force){
                 clearInterval(DataModel.autoRefreshId);
                 refresh();
-                DataModel.autoRefreshId = setInterval(refresh, 2000);
-            }else{
-                DataModel.autoRefreshId = setInterval(refresh, 2000);
             }
+            DataModel.autoRefreshId = setInterval(refresh, 2500);
         }
     };
 

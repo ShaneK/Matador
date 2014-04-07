@@ -1,24 +1,35 @@
 'use strict';
 
 
-var redisModel = require('../models/redis');
+var redisModel = require('../models/redis'),
+    q = require('q');
 
 
 module.exports = function (app) {
-    app.get('/pending', function (req, res) {
+    var getPendingModel = function(req, res){
+        var dfd = q.defer();
         redisModel.getStatus("wait").done(function(active){
             redisModel.getJobsInList(active).done(function(keys){
                 redisModel.formatKeys(keys).done(function(keyList){
                     redisModel.getStatusCounts().done(function(countObject){
                         var model = { keys: keyList, counts: countObject, pending: true, type: "Pending" };
-                        if(req.xhr){
-                            res.json(model);
-                        }else{
-                            res.render('jobList', model);
-                        }
+                        dfd.resolve(model);
                     });
                 });
             });
+        });
+        return dfd.promise;
+    };
+
+    app.get('/pending', function (req, res) {
+        getPendingModel(req, res).done(function(model){
+            res.render('jobList', model);
+        });
+    });
+
+    app.get('/api/pending', function (req, res) {
+        getPendingModel(req, res).done(function(model){
+            res.json(model);
         });
     });
 };
