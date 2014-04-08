@@ -3,7 +3,8 @@
 
 var redisModel = require('../models/redis'),
     _ = require('lodash'),
-    q = require('q');
+    q = require('q'),
+    updateInfo = require(process.cwd()+'/lib/updateInfo.js');
 
 
 module.exports = function (app) {
@@ -12,10 +13,12 @@ module.exports = function (app) {
         redisModel.getAllKeys().done(function(keys){
             redisModel.formatKeys(keys).done(function(keyList){
                 redisModel.getStatusCounts().done(function(countObject){
-                    if(countObject.stuck == 0) keyList = [];
-                    else keyList = _.filter(keyList, function(key){ return key.status === "stuck"; })
-                    var model = { keys: keyList, counts: countObject, overview: true };
-                    dfd.resolve(model);
+                    updateInfo.getMemoryUsage().done(function(memoryUsage){
+                        if(countObject.stuck == 0) keyList = [];
+                        else keyList = _.filter(keyList, function(key){ return key.status === "stuck"; })
+                        var model = { keys: keyList, counts: countObject, overview: true, memory: memoryUsage };
+                        dfd.resolve(model);
+                    });
                 });
             });
         });

@@ -8,8 +8,8 @@ Matador
 <h1 class="page-header">{type} <span class="btn-group">
         <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
         <ul class="dropdown-menu">
-            <li><a href="#" onclick="deleteByStatus('{type}');">Delete all {type} jobs</a></li>
-            {@if cond="'{type}'!='Pending'"}<li><a href="#" onclick="pendingByStatus('{type}');">Revert all {type} jobs to Pending</a></li>{/if}
+            <li><a href="#" onclick="redisHandler.fn.deleteByStatus('{type}');">Delete all {type} jobs</a></li>
+            {@if cond="'{type}'!='Pending'"}<li><a href="#" onclick="redisHandler.fn.pendingByStatus('{type}');">Revert all {type} jobs to Pending</a></li>{/if}
         </ul>
     </span>
 </h1>
@@ -29,10 +29,10 @@ Matador
             <td data-bind="text: type"></td>
             <td data-bind="text: status"></td>
             <td>
-                <button class="btn btn-default" data-bind="click: deleteById" title="Delete">
+                <button class="btn btn-default" data-bind="click: redisHandler.fn.deleteById" title="Delete">
                     <i class="fa fa-trash-o"></i>
                 </button>&nbsp;
-                <button class="btn btn-default" data-bind="visible: '{type}' !== 'Pending', click: pendingById" title="Revert to pending">
+                <button class="btn btn-default" data-bind="visible: '{type}' !== 'Pending', click: redisHandler.fn.pendingById" title="Revert to pending">
                     <i class="fa fa-repeat"></i>
                 </button>
             </td>

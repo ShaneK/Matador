@@ -18,6 +18,14 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="/js/knockout.min.js"></script>
+    <script src="/js/jquery.blockUI.js"></script>
+    <script src="/js/jquery.noty.packaged.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/holder.js"></script>
+    <script src="/js/RedisHandler.js"></script>
 </head>
 
 <body>
@@ -64,14 +72,6 @@
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<script src="/js/knockout.min.js"></script>
-<script src="/js/jquery.blockUI.js"></script>
-<script src="/js/jquery.noty.packaged.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/holder.js"></script>
-<script src="/js/app.js"></script>
-
 <script type="text/javascript">
     var keys = ko.observableArray([]);
     {#keys}
@@ -84,6 +84,7 @@
         pending: ko.observable({?counts}" ("+{counts.pending}+")"{:else}null{/counts}),
         stuck: ko.observable({?counts}" ("+{counts.stuck}+")"{:else}null{/counts}),
         keys: keys,
+        memory: ko.observable({}),
         autoRefresh: ko.observable(true),
         autoRefreshId: null,
         refreshViewModel: function(force){
@@ -96,6 +97,7 @@
                         DataModel.pending(" ("+data.counts.pending+")");
                         DataModel.stuck(" ("+data.counts.stuck+")");
                         DataModel.keys(data.keys);
+                        DataModel.memory(data.memory);
                     });
                 }
             };
