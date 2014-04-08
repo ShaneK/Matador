@@ -4,7 +4,7 @@ A node-based web interface for the <a href="https://github.com/OptimalBits/bull"
 ***
 
 **Why?**  
-We needed a project manager and we wanted to stick to one that only really relied on Node and Redis, so we looked and looked until we found Bull. Bull looked really nice, but we also wanted to be able to monitor the jobs without having to actually log into the AWS server to access the Redis database. Thus, Matador was born.
+We needed a job manager and we wanted to stick to one that only really relied on Node and Redis, so we looked and looked until we found Bull. Bull looked really nice, but we also wanted to be able to monitor the jobs without having to actually log into the AWS server to access the Redis database. Thus, Matador was born.
 
 **Why not just use Kue?**  
 Kue has some <a href="https://github.com/LearnBoost/kue/issues/53">really old</a>, <a href="https://github.com/LearnBoost/kue/issues/130">outstanding bugs</a> that we encounted just while testing it. We tested Bull quite a bit, and couldn't reproduce these bugs. We thought it'd be easier to build an interface for Bull than to use Kue and deal with those bugs. (Notice that the first one, while closed, was never actually fixed...)
