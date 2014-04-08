@@ -9,7 +9,7 @@ Matador
     <h1 class="page-header">Dashboard</h1>
     <div class="row placeholders">
         <div class="col-sm-6 placeholder">
-            <canvas id="memoryChart" width="400" height="200"></canvas>
+            <canvas id="memoryChart" width="350" height="200"></canvas>
             <h4>Memory Usage</h4>
             <span class="text-muted">Peak: <span data-bind="text: peakMemory"></span></span>
         </div>

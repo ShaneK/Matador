@@ -41,6 +41,8 @@ var ChartHandler = function(){
         subscribe: function(){
             var ctx = $("#memoryChart").get(0).getContext("2d");
             DataModel.memory.subscribe(function(){
+                ctx.canvas.width = 350;
+                ctx.canvas.height = 200;
                 var info = _self.fn.getDataAndLabels();
 
                 var data = {
