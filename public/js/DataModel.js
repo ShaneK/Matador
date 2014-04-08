@@ -22,8 +22,10 @@ var DataModel = function(){
                     _self.pending(" ("+data.counts.pending+")");
                     _self.stuck(" ("+data.counts.stuck+")");
                     _self.keys(data.keys);
-                    _self.memory(data.memory.usage);
-                    _self.peakMemory(data.memory.peak.human);
+                    if(data.memory){
+                        _self.memory(data.memory.usage);
+                        _self.peakMemory(data.memory.peak.human);
+                    }
                 });
             };
             if(force){

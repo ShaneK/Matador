@@ -25,7 +25,7 @@ var RedisHandler = function(){
                 _self.util.blockUI();
                 $.getJSON("/jobs/delete/id/"+type+"/"+id).done(function(response){
                     _self.util.handleAjaxResponse(response);
-                    DataModel.refreshViewModel(true);
+                    dataModel.fn.refreshViewModel(true);
                 }).always(function(){
                     $.unblockUI();
                 });
@@ -45,7 +45,7 @@ var RedisHandler = function(){
                         response.message = response.message.replace(status, statusDisplay);
                     }
                     _self.util.handleAjaxResponse(response);
-                    DataModel.refreshViewModel(true);
+                    dataModel.fn.refreshViewModel(true);
                 }).always(function(){
                     $.unblockUI();
                 });
@@ -58,7 +58,7 @@ var RedisHandler = function(){
                 _self.util.blockUI();
                 $.getJSON("/jobs/pending/id/"+type+"/"+id).done(function(response){
                     _self.util.handleAjaxResponse(response);
-                    DataModel.refreshViewModel(true);
+                    dataModel.fn.refreshViewModel(true);
                 }).always(function(){
                     $.unblockUI();
                 });
@@ -78,7 +78,7 @@ var RedisHandler = function(){
                         response.message = response.message.replace(status, statusDisplay);
                     }
                     _self.util.handleAjaxResponse(response);
-                    DataModel.refreshViewModel(true);
+                    dataModel.fn.refreshViewModel(true);
                 }).always(function(){
                     $.unblockUI();
                 });

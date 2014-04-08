@@ -24,7 +24,6 @@
     <script src="/js/jquery.blockUI.js"></script>
     <script src="/js/jquery.noty.packaged.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/holder.js"></script>
     <script src="/js/DataModel.js"></script>
     <script src="/js/RedisHandler.js"></script>
 </head>
