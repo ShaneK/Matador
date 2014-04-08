@@ -331,6 +331,20 @@ var deleteJobById = function(type, id){
     return dfd.promise;
 };
 
+var getProgressForKeys = function(keys){
+    var dfd = q.defer();
+    var multi = [];
+    for(var i = 0, ii = keys.length; i < ii; i++){
+        multi.push(["hget", "bull:"+keys[i].type+":"+keys[i].id, "progress"]);
+    }
+    redis.multi(multi).exec(function(err, results){
+        for(var i = 0, ii = keys.length; i < ii; i++){
+            keys[i].progress = results[i];
+        }
+        dfd.resolve(keys);
+    });
+    return dfd.promise;
+};
 
 module.exports.getAllKeys = getAllKeys; //Returns all JOB keys in string form (ex: bull:video transcoding:101)
 module.exports.formatKeys = formatKeys; //Returns all keys in object form, with status applied to object. Ex: {id: 101, type: "video transcoding", status: "pending"}
@@ -342,3 +356,4 @@ module.exports.makePendingByType = makePendingByType; //Makes all jobs in a spec
 module.exports.makePendingById = makePendingById; //Makes a job with a specific ID pending, requires the type of job as the first parameter and ID as second.
 module.exports.deleteJobByStatus = deleteJobByStatus; //Deletes all jobs in a specific status
 module.exports.deleteJobById = deleteJobById; //Deletes a job by ID. Requires type as the first parameter and ID as the second.
+module.exports.getProgressForKeys = getProgressForKeys; //Gets the progress for the keys passed in

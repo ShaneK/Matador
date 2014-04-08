@@ -20,6 +20,7 @@ Matador
             <th>Id</th>
             <th>Type</th>
             <th>Status</th>
+            <th data-bind="visible: keys().length > 0 && keys()[0].progress != undefined">Progress</th>
             <th>Manage</th>
         </tr>
         </thead>
@@ -28,6 +29,7 @@ Matador
             <td data-bind="text: id"></td>
             <td data-bind="text: type"></td>
             <td data-bind="text: status"></td>
+            <td data-bind="visible: keys.length > 0 && keys[0].progress != undefined, text: keys[0].progress != undefined ? progress : ''"></td>
             <td>
                 <button class="btn btn-default" data-bind="click: redisHandler.fn.deleteById" title="Delete">
                     <i class="fa fa-trash-o"></i>

@@ -75,7 +75,7 @@
 <script type="text/javascript">
     var keys = [];
     {#keys}
-    keys.push({id: "{id}", type: "{type}", status: "{status}"});
+    keys.push({id: "{id}", type: "{type}", status: "{status}"{?progress}, progress: "{progress}"{/progress}});
     {/keys}
 
     $(document).on('ready', function(){
