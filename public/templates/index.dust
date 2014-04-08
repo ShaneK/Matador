@@ -5,91 +5,19 @@ Matador
 {/title}
 
 {<body}
-<script src="/js/Chart.min.js"></script>
 <div data-bind="visible:!$.isEmptyObject(memory())">
     <h1 class="page-header">Dashboard</h1>
     <div class="row placeholders">
         <div class="col-sm-6 placeholder">
-            <canvas id="myChart" width="400" height="200"></canvas>
-            <h4>Label</h4>
-            <span class="text-muted">Something else</span>
+            <canvas id="memoryChart" width="400" height="200"></canvas>
+            <h4>Memory Usage</h4>
+            <span class="text-muted">Peak: <span data-bind="text: peakMemory"></span></span>
         </div>
         <div class="col-sm-6 placeholder">
             <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
             <h4>Label</h4>
             <span class="text-muted">Something else</span>
         </div>
-        <script>
-            $(document).ready(function(){
-                var ctx = $("#myChart").get(0).getContext("2d");
-                var data = {
-                    labels : ["January","February","March","April","May","June","July"],
-                    datasets : [
-                        {
-                            fillColor : "rgba(151,187,205,0.5)",
-                            strokeColor : "rgba(151,187,205,1)",
-                            pointColor : "rgba(151,187,205,1)",
-                            pointStrokeColor : "#fff",
-                            data : [28,48,40,19,96,27,100]
-                        }
-                    ]
-                };
-                var options = {
-                    scaleOverlay : false,
-                    scaleOverride : false,
-                    scaleSteps : null,
-                    scaleStepWidth : null,
-                    scaleStartValue : null,
-                    scaleLineColor : "rgba(0,0,0,.1)",
-                    scaleLineWidth : 1,
-                    scaleShowLabels : true,
-                    scaleLabel : "<%=value%> MB",
-                    scaleFontFamily : "'Arial'",
-                    scaleFontSize : 12,
-                    scaleFontStyle : "normal",
-                    scaleFontColor : "#666",
-                    scaleShowGridLines : true,
-                    scaleGridLineColor : "rgba(0,0,0,.05)",
-                    scaleGridLineWidth : 1,
-                    bezierCurve : true,
-                    pointDot : true,
-                    pointDotRadius : 3,
-                    pointDotStrokeWidth : 1,
-                    datasetStroke : true,
-                    datasetStrokeWidth : 2,
-                    datasetFill : true,
-                    animation : false
-                };
-                new Chart(ctx).Line(data, options);
-                DataModel.memory.subscribe(function(){
-                    var usage = DataModel.memory().usage;
-                    var dataset = [];
-                    var labels = [];
-                    for(var time in usage){
-                        var date = new Date(parseInt(time));
-                        var hours = date.getHours();
-                        if(hours < 10) hours = "0"+hours;
-                        var minutes = date.getMinutes();
-                        if(minutes < 10) minutes = "0" + minutes;
-                        labels.push(hours + ":" + minutes);
-                        dataset.push(parseInt(usage[time].split(":")[0])/1024);
-                    }
-                    var data = {
-                        labels : labels,
-                        datasets : [
-                            {
-                                fillColor : "rgba(151,187,205,0.5)",
-                                strokeColor : "rgba(151,187,205,1)",
-                                pointColor : "rgba(151,187,205,1)",
-                                pointStrokeColor : "#fff",
-                                data : dataset
-                            }
-                        ]
-                    };
-                    new Chart(ctx).Line(data, options);
-                });
-            });
-        </script>
     </div>
 </div>
 <div data-bind="visible: keys().length > 0">
@@ -122,4 +50,6 @@ Matador
         </table>
     </div>
 </div>
+<script src="/js/Chart.min.js"></script>
+<script src="/js/ChartHandler.js"></script>
 {/body}

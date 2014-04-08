@@ -85,6 +85,7 @@
         stuck: ko.observable({?counts}" ("+{counts.stuck}+")"{:else}null{/counts}),
         keys: keys,
         memory: ko.observable({}),
+        peakMemory: ko.observable(""),
         autoRefresh: ko.observable(true),
         autoRefreshId: null,
         refreshViewModel: function(force){
