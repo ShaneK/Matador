@@ -25,6 +25,7 @@
     <script src="/js/jquery.noty.packaged.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/holder.js"></script>
+    <script src="/js/DataModel.js"></script>
     <script src="/js/RedisHandler.js"></script>
 </head>
 
@@ -73,46 +74,25 @@
 </div>
 
 <script type="text/javascript">
-    var keys = ko.observableArray([]);
+    var keys = [];
     {#keys}
     keys.push({id: "{id}", type: "{type}", status: "{status}"});
     {/keys}
-    var DataModel = {
-        complete: ko.observable({?counts}" ("+{counts.complete}+")"{:else}null{/counts}),
-        failed: ko.observable({?counts}" ("+{counts.failed}+")"{:else}null{/counts}),
-        active: ko.observable({?counts}" ("+{counts.active}+")"{:else}null{/counts}),
-        pending: ko.observable({?counts}" ("+{counts.pending}+")"{:else}null{/counts}),
-        stuck: ko.observable({?counts}" ("+{counts.stuck}+")"{:else}null{/counts}),
-        keys: keys,
-        memory: ko.observable({}),
-        peakMemory: ko.observable(""),
-        autoRefresh: ko.observable(true),
-        autoRefreshId: null,
-        refreshViewModel: function(force){
-            var refresh = function(){
-                if(DataModel.autoRefresh()){
-                    $.getJSON("/api"+window.location.pathname).done(function(data){
-                        DataModel.complete(" ("+data.counts.complete+")");
-                        DataModel.failed(" ("+data.counts.failed+")");
-                        DataModel.active(" ("+data.counts.active+")");
-                        DataModel.pending(" ("+data.counts.pending+")");
-                        DataModel.stuck(" ("+data.counts.stuck+")");
-                        DataModel.keys(data.keys);
-                        DataModel.memory(data.memory);
-                    });
-                }
-            };
-            if(force){
-                clearInterval(DataModel.autoRefreshId);
-                refresh();
-            }
-            DataModel.autoRefreshId = setInterval(refresh, 2500);
-        }
-    };
 
     $(document).on('ready', function(){
-        ko.applyBindings(DataModel);
-        DataModel.refreshViewModel();
+        {?counts}
+        /*If counts doesn't exist we're on an error page*/
+        ko.applyBindings(dataModel);
+        dataModel.fn.refreshViewModel();
+
+        dataModel.keys(keys);
+
+        dataModel.complete(" ({counts.complete})");
+        dataModel.failed(" ({counts.failed})");
+        dataModel.active(" ({counts.active})");
+        dataModel.pending(" ({counts.pending})");
+        dataModel.stuck(" ({counts.stuck})");
+        {/counts}
     });
 </script>
 

@@ -3,24 +3,23 @@ var ChartHandler = function(){
 
     _self.fn = {
         getDataAndLabels: function(){
-            var usage = DataModel.memory().usage;
+            var usage = dataModel.memory();
             var dataset = [];
             var labels = [];
-            for(var time in usage){
-                var date = new Date(parseInt(time));
+            for(var i = 0, ii = usage.length; i < ii; i++){
+                var date = new Date(parseInt(usage[i].time));
                 var hours = date.getHours();
                 if(hours < 10) hours = "0"+hours;
                 var minutes = date.getMinutes();
                 if(minutes < 10) minutes = "0" + minutes;
                 labels.push("       "+hours + ":" + minutes);
-                dataset.push((parseInt(usage[time].split(":")[0])/1024).toFixed(2));
+                dataset.push((parseInt(usage[i].memory.split(":")[0])/1024).toFixed(2));
             }
-            DataModel.peakMemory(DataModel.memory().peak.human);
             return {data: dataset, labels: labels};
         },
         getOptions: function(data){
-            var min = Math.max.apply(Math, data)
-            var max = Math.min.apply(Math, data)
+            var min = Math.max.apply(Math, data);
+            var max = Math.min.apply(Math, data);
 
             if (max == min) {
                 //Chart.js screws up if all the data on a line is the same, this is a workaround.
@@ -40,7 +39,7 @@ var ChartHandler = function(){
         },
         subscribe: function(){
             var ctx = $("#memoryChart").get(0).getContext("2d");
-            DataModel.memory.subscribe(function(){
+            dataModel.memory.subscribe(function(){
                 ctx.canvas.width = 350;
                 ctx.canvas.height = 200;
                 var info = _self.fn.getDataAndLabels();

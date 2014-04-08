@@ -8,17 +8,13 @@ Matador
 <div data-bind="visible:!$.isEmptyObject(memory())">
     <h1 class="page-header">Dashboard</h1>
     <div class="row placeholders">
-        <div class="col-sm-6 placeholder">
+        <div class="col-sm-12 placeholder">
             <canvas id="memoryChart" width="350" height="200"></canvas>
             <h4>Memory Usage</h4>
             <span class="text-muted">Peak: <span data-bind="text: peakMemory"></span></span>
         </div>
-        <div class="col-sm-6 placeholder">
-            <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-            <h4>Label</h4>
-            <span class="text-muted">Something else</span>
-        </div>
     </div>
+    <!--Other charts and information could easily be added later!-->
 </div>
 <div data-bind="visible: keys().length > 0">
     <h2 class="sub-header">Stuck Jobs</h2>
@@ -52,4 +48,16 @@ Matador
 </div>
 <script src="/js/Chart.min.js"></script>
 <script src="/js/ChartHandler.js"></script>
+<script>
+    {?memory}
+    $(document).ready(function(){
+        var usage = [];
+    {#memory.usage}
+        usage.push({time: "{time}", memory: "{memory}"});
+    {/memory.usage}
+        dataModel.memory(usage);
+        dataModel.peakMemory("{memory.peak.human}");
+    });
+    {/memory}
+</script>
 {/body}
