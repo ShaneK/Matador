@@ -1,6 +1,6 @@
 # Matador
 
-A node-based web interface for the <a href="https://github.com/OptimalBits/bull">Bull Project Manager</a>
+A node-based web interface for the <a href="https://github.com/OptimalBits/bull">Bull Job Manager</a>
 ***
 
 **Why?**  
