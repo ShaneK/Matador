@@ -8,29 +8,34 @@ var ChartHandler = function(){
             var usage = dataModel.memory();
             var dataset = [];
             var labels = [];
+
+            //Determine if there's any data large enough to warrant the use of megabytes
+            _self.usingMegabytes = false;
+            for(var i = 0, ii = usage.length; i < ii; i++){
+                if(parseInt(usage[i].memory.split(":")[0]) >= 1048576){ //1 MB
+                    _self.usingMegabytes = true;
+                    break;
+                }
+            }
+
             for(var i = 0, ii = usage.length; i < ii; i++){
                 var date = new Date(parseInt(usage[i].time));
                 var hours = date.getHours();
                 if(hours < 10) hours = "0"+hours;
                 var minutes = date.getMinutes();
                 if(minutes < 10) minutes = "0" + minutes;
-                labels.push("       "+hours + ":" + minutes);
+                labels.push("       "+hours + ":" + minutes); //Pre-appended spaces are to force the "tilt"
                 if(_self.usingMegabytes){
                     dataset.push(((parseInt(usage[i].memory.split(":")[0])/1024/1024)).toFixed(2));
                 }else{
-                    var value = (parseInt(usage[i].memory.split(":")[0])/1024);
-                    if(value > 1024){
-                        _self.usingMegabytes = true;
-                        value /= 1024;
-                    }
-                    dataset.push((value).toFixed(2));
+                    dataset.push(((parseInt(usage[i].memory.split(":")[0])/1024)).toFixed(2));
                 }
             }
             return {data: dataset, labels: labels};
         },
         getOptions: function(data){
-            var min = Math.max.apply(Math, data);
-            var max = Math.min.apply(Math, data);
+            var min = Math.min.apply(Math, data);
+            var max = Math.max.apply(Math, data);
 
             var options = {};
 
@@ -52,7 +57,6 @@ var ChartHandler = function(){
                     scaleLabel: scaleLabel
                 };
             }
-            _self.usingMegabytes = false;
             return options;
         },
         subscribe: function(){
