@@ -1,6 +1,8 @@
 var ChartHandler = function(){
     var _self = this;
 
+    _self.usingMegabytes = false;
+
     _self.fn = {
         getDataAndLabels: function(){
             var usage = dataModel.memory();
@@ -13,7 +15,16 @@ var ChartHandler = function(){
                 var minutes = date.getMinutes();
                 if(minutes < 10) minutes = "0" + minutes;
                 labels.push("       "+hours + ":" + minutes);
-                dataset.push((parseInt(usage[i].memory.split(":")[0])/1024).toFixed(2));
+                if(_self.usingMegabytes){
+                    dataset.push(((parseInt(usage[i].memory.split(":")[0])/1024/1024)).toFixed(2));
+                }else{
+                    var value = (parseInt(usage[i].memory.split(":")[0])/1024);
+                    if(value > 1024){
+                        _self.usingMegabytes = true;
+                        value /= 1024;
+                    }
+                    dataset.push((value).toFixed(2));
+                }
             }
             return {data: dataset, labels: labels};
         },
@@ -21,21 +32,28 @@ var ChartHandler = function(){
             var min = Math.max.apply(Math, data);
             var max = Math.min.apply(Math, data);
 
+            var options = {};
+
+            var scaleLabel = "<%=value%> " + (_self.usingMegabytes ? "MB" : "KB");
+
             if (max == min) {
                 //Chart.js screws up if all the data on a line is the same, this is a workaround.
-                return {
+                options = {
                     animation: false,
                     scaleOverride: true,
                     scaleSteps: 3,
                     scaleStepWidth: 1,
                     scaleStartValue: max-2,
-                    scaleLabel: "<%=value%> MB"
+                    scaleLabel: scaleLabel
+                };
+            }else{
+                options = {
+                    animation: false,
+                    scaleLabel: scaleLabel
                 };
             }
-            return {
-                animation: false,
-                scaleLabel: "<%=value%> MB"
-            };
+            _self.usingMegabytes = false;
+            return options;
         },
         subscribe: function(){
             var ctx = $("#memoryChart").get(0).getContext("2d");
