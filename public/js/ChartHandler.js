@@ -65,7 +65,6 @@ var ChartHandler = function(){
                 ctx.canvas.width = 350;
                 ctx.canvas.height = 200;
                 var info = _self.fn.getDataAndLabels();
-
                 var data = {
                     labels : info.labels,
                     datasets : [

@@ -98,7 +98,14 @@ var getStatus = function(status){
 
 var getAllKeys = function(){
     var dfd = q.defer();
-    redis.keys("bull:*:[0-9]*", function(err, keys){
+    redis.keys("bull:*:[0-9]*", function(err, keysWithLocks){
+        var keys = [];
+        for(var i = 0, ii = keysWithLocks.length; i < ii; i++){
+            var keyWithLock = keysWithLocks[i];
+            if(keyWithLock.substring(keyWithLock.length-5, keyWithLock.length) !== ":lock"){
+                keys.push(keyWithLock);
+            }
+        }
         dfd.resolve(keys);
     });
     return dfd.promise;
