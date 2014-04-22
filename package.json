@@ -22,7 +22,8 @@
     "makara": "~0.3.0",
     "q": "~1.0.1",
     "redis": "~0.10.1",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "bull": "~0.1.6"
   },
   "devDependencies": {
     "mocha": "~1.17.0",
