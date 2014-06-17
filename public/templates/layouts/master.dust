@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="An API for Tibia.com">
+    <meta name="description" content="A node-based web interface for the Bull Job Manager">
     <meta name="author" content="Shane King">
     <title>{+title /}</title>
 
