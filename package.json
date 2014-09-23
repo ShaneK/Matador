@@ -12,18 +12,18 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "kraken-js": "~0.7.0",
-    "express": "~3.4.4",
-    "adaro": "~0.1.x",
-    "nconf": "~0.6.8",
-    "less": "~1.6.1",
-    "dustjs-linkedin": "~2.0.3",
-    "dustjs-helpers": "~1.1.1",
+    "kraken-js": "0.7.0",
+    "express": "3.4.4",
+    "adaro": "0.1.x",
+    "nconf": "0.6.8",
+    "less": "1.6.1",
+    "dustjs-linkedin": "2.0.3",
+    "dustjs-helpers": "1.1.1",
     "makara": "~0.3.0",
-    "q": "~1.0.1",
-    "redis": "~0.10.1",
-    "lodash": "~2.4.1",
-    "bull": "~0.1.6"
+    "q": "1.0.1",
+    "redis": "0.10.1",
+    "lodash": "2.4.1",
+    "bull": "0.1.6"
   },
   "devDependencies": {
     "mocha": "~1.17.0",
