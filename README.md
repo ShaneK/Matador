@@ -62,7 +62,7 @@ Have an issue? Feel free to open an issue in the <a href="https://github.com/Sha
 
 If you wanna help, feel free to fork and make pull requests! The general layout and feel of Matador is pretty basic, and I tried to keep my code relatively clean (though, some of it is pretty awful looking right now...sorry about that).
 
-**License**
+# License
 ***
 
 The MIT License (MIT)
