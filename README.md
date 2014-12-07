@@ -3,7 +3,7 @@
 A node-based web interface for the <a href="https://github.com/OptimalBits/bull">Bull Job Manager</a>
 ***
 
-**Update Note version 0.1.0 -> 1.0.0**
+**Update Note version 0.1.0 -> 1.0.0**  
 In the latest update, Matador went from relying on Kraken to relying on just express/dust (which is why I incremented by a major version number). This occurred because Kraken has changed quite a bit since Matador was made, with quite a bit of the previous code becoming deprecated. I also re-worked quite a bit of the code to try to make it quicker and resolve some of the issues/feature requests.
 
 **Why?**  
