@@ -4,7 +4,7 @@ A node-based web interface for the <a href="https://github.com/OptimalBits/bull"
 ***
 
 **Update Note version 0.1.0 -> 1.0.0**  
-In the latest update, Matador went from relying on Kraken to relying on just express/dust (which is why I incremented by a major version number). This occurred because Kraken has changed quite a bit since Matador was made, with quite a bit of the previous code becoming deprecated. I also re-worked quite a bit of the code to try to make it quicker and resolve some of the issues/feature requests.
+In the latest update, Matador went from relying on Kraken to relying on just express/dust (which is why I incremented by a major version number). This occurred because Kraken has changed quite a bit since Matador was made, with quite a bit of the previous code becoming deprecated. I also re-worked a lot of the code to try to make it quicker and resolve some of the issues/feature requests.
 
 **Why?**  
 We needed a job manager and we wanted to stick to one that only really relied on Node and Redis, so we looked and looked until we found Bull. Bull looked really nice, but we also wanted to be able to monitor the jobs without having to actually log into the AWS server to access the Redis database. Thus, Matador was born.
