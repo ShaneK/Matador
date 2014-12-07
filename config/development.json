@@ -1,0 +1,13 @@
+{
+    "port": 1337,
+    "redis": {
+        "host": "localhost",
+        "port": 6379
+    },
+    "errorPages": {
+        "404": "errors/404",
+        "500": "errors/500",
+        "503": "errors/503"
+    },
+    "development": true
+}
