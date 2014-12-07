@@ -3,6 +3,9 @@
 A node-based web interface for the <a href="https://github.com/OptimalBits/bull">Bull Job Manager</a>
 ***
 
+**Update Note version 0.1.0 -> 1.0.0**
+In the latest update, Matador went from relying on Kraken to relying on just express/dust (which is why I incremented by a major version number). This occurred because Kraken has changed quite a bit since Matador was made, with quite a bit of the previous code becoming deprecated. I also re-worked quite a bit of the code to try to make it quicker and resolve some of the issues/feature requests.
+
 **Why?**  
 We needed a job manager and we wanted to stick to one that only really relied on Node and Redis, so we looked and looked until we found Bull. Bull looked really nice, but we also wanted to be able to monitor the jobs without having to actually log into the AWS server to access the Redis database. Thus, Matador was born.
 
@@ -26,7 +29,7 @@ If you're not using Bull, and you think you want to use Matador for some reason,
 
 
 **What is it built on?**  
-Matador requires Node (obviously) and is built with <a href="http://krakenjs.com/">Kraken</a>. Other NPM packages utilized include, but are probably not limited to:
+Matador requires Node (obviously) and is built on Experess. Other NPM packages utilized include, but are probably not limited to:
 
 * <a href="http://lodash.com/">Lodash</a>
 * <a href="https://github.com/mranney/node_redis">Redis</a>
