@@ -1,0 +1,13 @@
+{
+    "port": 80,
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379
+    },
+    "errorPages": {
+        "404": "errors/404",
+        "500": "errors/500",
+        "503": "errors/503"
+    },
+    "development": true
+}
