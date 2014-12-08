@@ -49,7 +49,7 @@ On top of that, Matador also utilizes several open-source javascript/css librari
 **Screenshot**
 
 
-<img src="http://i.imgur.com/qRrBB9B.png" width="600" alt="Overview" />
+<img src="https://cloud.githubusercontent.com/assets/561207/5333224/66e5334a-7e36-11e4-8394-1728f1662569.png" width="600" alt="Overview" />
 
 **Q/A:**
 
