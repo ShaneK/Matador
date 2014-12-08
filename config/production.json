@@ -8,5 +8,5 @@
         "404": "errors/404",
         "not-connected": "errors/not-connected"
     },
-    "development": true
+    "production": true
 }
