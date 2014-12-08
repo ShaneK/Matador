@@ -1,13 +1,12 @@
 {
-    "port": 80,
+    "port": 1337,
     "redis": {
-        "host": "127.0.0.1",
+        "host": "localhost",
         "port": 6379
     },
     "errorPages": {
         "404": "errors/404",
-        "500": "errors/500",
-        "503": "errors/503"
+        "not-connected": "errors/not-connected"
     },
     "development": true
 }

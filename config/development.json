@@ -6,8 +6,7 @@
     },
     "errorPages": {
         "404": "errors/404",
-        "500": "errors/500",
-        "503": "errors/503"
+        "not-connected": "errors/not-connected"
     },
     "development": true
 }
