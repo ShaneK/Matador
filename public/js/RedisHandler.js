@@ -64,6 +64,33 @@ var RedisHandler = function(){
                 });
             });
         },
+        infoById: function(o, e){
+            var id = o.id;
+            var type = o.type;
+            _self.util.blockUI();
+            $.getJSON("/jobs/info/"+type+"/"+id).done(function(response){
+                if(response.success === false){
+                    _self.util.handleAjaxResponse(response);
+                }else{
+                    var buttons = [
+                        {addClass: 'btn btn-primary', text: 'Ok', onClick: function ($noty) { $noty.close(); } },
+                    ];
+                    var message = "<pre style='text-align: left'>Job ID: "+id+"\nType: "+type+"\nStatus: "+ o.status + "\n\nData:\n"+JSON.stringify(JSON.parse(response.message), null, "\t")+"</pre>";
+                    var displayedNoty = noty({
+                        text: message,
+                        type: 'alert',
+                        layout: 'center',
+                        buttons: buttons,
+                        modal: true,
+                        template: '<div class="noty_message" style="width: 100%;"><span class="noty_text" style="width: 100%"></span><div class="noty_close"></div></div>'
+                    });
+                    displayedNoty.$message.parents('li').width("50vw");
+                    displayedNoty.$message.parents('.i-am-new').css('left', '25vw');
+                }
+            }).always(function(){
+                $.unblockUI();
+            });
+        },
         pendingByStatus: function(status){
             status = status.toLowerCase();
             var statusDisplay = status;

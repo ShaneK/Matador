@@ -14,6 +14,7 @@ Matador
     </span>
 </h1>
 <div class="table-responsive" data-bind="visible: keys().length > 0">
+    <div id="jobData"></div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -36,6 +37,9 @@ Matador
                 </button>&nbsp;
                 <button class="btn btn-default" data-bind="visible: '{type}' !== 'Pending', click: redisHandler.fn.pendingById" title="Revert to pending">
                     <i class="fa fa-repeat"></i>
+                </button>&nbsp;
+                <button class="btn btn-default" data-bind="click: redisHandler.fn.infoById" title="Show job data">
+                    <i class="fa fa-info"></i>
                 </button>
             </td>
         </tr>
