@@ -17,7 +17,7 @@ Easy! If you're using Bull already, then all you need to do is clone this repo a
 
 `npm install`
 
-You will need to modify the config/app.json file so that it has the right values for your host and port for your redis server, then to start the server all you need to do is run
+You will need to modify the config/development.json and config/production.json files so that it has the right values for your host and port for your redis server (also any additional redis options, such as passwords), then to start the server all you need to do is run
 
 `npm start`
 
