@@ -1,41 +1,10 @@
 'use strict';
 
+var config = require('./config'),
+    app = require('./lib/server');
 
-var kraken = require('kraken-js'),
-    app = {},
-    redisAdapter = require(process.cwd()+'/lib/redisConnector.js'),
-    redisConnectionEnforcer = require(process.cwd()+'/lib/enforceConnection.js');
+require('./lib/setupAndMiddleware')(app);
 
-
-app.configure = function configure(nconf, next) {
-    // Async method run on startup.
-    redisAdapter.connect(nconf.get('redis'));
-    next(null);
-};
-
-
-app.requestStart = function requestStart(server) {
-    // Run before most express middleware has been registered.
-};
-
-
-app.requestBeforeRoute = function requestBeforeRoute(server) {
-    server.use(redisConnectionEnforcer());
-};
-
-
-app.requestAfterRoute = function requestAfterRoute(server) {
-    // Run after all routes have been added.
-};
-
-
-if (require.main === module) {
-    kraken.create(app).listen(function (err, server) {
-        if (err) {
-            console.error(err.stack);
-        }
-    });
-}
-
-
-module.exports = app;
+app.listen(config.port, function(){
+    console.log("Matador listening on port", config.port, "in", process.env.NODE_ENV, "mode");
+});

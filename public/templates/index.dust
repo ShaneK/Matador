@@ -9,7 +9,7 @@ Matador
     <h1 class="page-header">Dashboard</h1>
     <div class="row placeholders">
         <div class="col-sm-12 placeholder">
-            <canvas id="memoryChart" width="350" height="200"></canvas>
+            <div id="memoryChart" style="width:100%; height: 300px"></div>
             <h4>Memory Usage</h4>
             <span class="text-muted">Peak: <span data-bind="text: peakMemory"></span></span>
         </div>
@@ -46,7 +46,8 @@ Matador
         </table>
     </div>
 </div>
-<script src="/js/Chart.min.js"></script>
+<script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.time.js"></script>
 <script src="/js/ChartHandler.js"></script>
 <script>
     {?memory}

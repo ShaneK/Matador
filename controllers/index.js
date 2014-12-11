@@ -1,11 +1,8 @@
 'use strict';
-
-
 var redisModel = require('../models/redis'),
     _ = require('lodash'),
     q = require('q'),
     updateInfo = require(process.cwd()+'/lib/updateInfo.js');
-
 
 module.exports = function (app) {
     var getOverviewData = function(req, res){

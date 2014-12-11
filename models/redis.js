@@ -338,6 +338,23 @@ var deleteJobById = function(type, id){
     return dfd.promise;
 };
 
+var getDataById = function(type, id){
+    var dfd = q.defer();
+    if(!id) dfd.resolve({success: false, message: "There was no ID provided."});
+    if(!type) dfd.resolve({success: false, message: "There was no type provided."});
+
+    var firstPartOfKey = "bull:"+type+":";
+    var multi = [];
+    redis.hget(firstPartOfKey+id, 'data', function(err, data){
+        if(err){
+            dfd.resolve({success: false, message: err});
+        }else{
+            dfd.resolve({success: true, message: data});
+        }
+    });
+    return dfd.promise;
+};
+
 var getProgressForKeys = function(keys){
     var dfd = q.defer();
     var multi = [];
@@ -358,6 +375,7 @@ module.exports.formatKeys = formatKeys; //Returns all keys in object form, with 
 module.exports.getStatus = getStatus; //Returns indexes of completed jobs
 module.exports.getStatusCounts = getStatusCounts; //Returns counts for different statuses
 module.exports.getJobsInList = getJobsInList; //Returns the job data from a list of job ids
+module.exports.getDataById = getDataById; //Returns the job's data based on type and ID
 module.exports.removeJobs = removeJobs; //Removes one or  more jobs by ID, also removes the job from any state list it's in
 module.exports.makePendingByType = makePendingByType; //Makes all jobs in a specific status pending
 module.exports.makePendingById = makePendingById; //Makes a job with a specific ID pending, requires the type of job as the first parameter and ID as second.

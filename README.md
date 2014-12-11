@@ -3,6 +3,9 @@
 A node-based web interface for the <a href="https://github.com/OptimalBits/bull">Bull Job Manager</a>
 ***
 
+**Update Note version 0.1.0 -> 1.0.0**  
+In the latest update, Matador went from relying on Kraken to relying on just express/dust (which is why I incremented by a major version number). This occurred because Kraken has changed quite a bit since Matador was made, with quite a bit of the previous code becoming deprecated. I also re-worked some of the code to try to make it quicker and resolve some of the issues/feature requests.
+
 **Why?**  
 We needed a job manager and we wanted to stick to one that only really relied on Node and Redis, so we looked and looked until we found Bull. Bull looked really nice, but we also wanted to be able to monitor the jobs without having to actually log into the AWS server to access the Redis database. Thus, Matador was born.
 
@@ -14,7 +17,7 @@ Easy! If you're using Bull already, then all you need to do is clone this repo a
 
 `npm install`
 
-You will need to modify the config/app.json file so that it has the right values for your host and port for your redis server, then to start the server all you need to do is run
+You will need to modify the config/development.json and config/production.json files so that it has the right values for your host and port for your redis server (also any additional redis options, such as passwords), then to start the server all you need to do is run
 
 `npm start`
 
@@ -26,7 +29,7 @@ If you're not using Bull, and you think you want to use Matador for some reason,
 
 
 **What is it built on?**  
-Matador requires Node (obviously) and is built with <a href="http://krakenjs.com/">Kraken</a>. Other NPM packages utilized include, but are probably not limited to:
+Matador requires Node (obviously) and is built on Experess. Other NPM packages utilized include, but are probably not limited to:
 
 * <a href="http://lodash.com/">Lodash</a>
 * <a href="https://github.com/mranney/node_redis">Redis</a>
@@ -46,7 +49,7 @@ On top of that, Matador also utilizes several open-source javascript/css librari
 **Screenshot**
 
 
-<img src="http://i.imgur.com/x1VVbcX.png" width="600" alt="Overview" />
+<img src="https://cloud.githubusercontent.com/assets/561207/5333224/66e5334a-7e36-11e4-8394-1728f1662569.png" width="600" alt="Overview" />
 
 **Q/A:**
 

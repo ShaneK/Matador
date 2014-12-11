@@ -33,4 +33,12 @@ module.exports = function (app) {
             res.json(results);
         });
     });
+
+    app.get('/jobs/info/:type/:id', function(req, res){
+        var id = req.param("id"),
+            type = req.param("type");
+        redisModel.getDataById(type, id).done(function(results){
+            res.json(results);
+        });
+    });
 };

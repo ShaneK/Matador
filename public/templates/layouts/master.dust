@@ -26,6 +26,7 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/DataModel.js"></script>
     <script src="/js/RedisHandler.js"></script>
+    <script src="/js/lodash.min.js"></script>
 </head>
 
 <body>
