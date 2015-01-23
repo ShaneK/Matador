@@ -8,11 +8,11 @@
     <meta name="author" content="Shane King">
     <title>{+title /}</title>
 
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/master.css"/>
-    <link href="/css/font-awesome.css" rel="stylesheet">
-    <link rel="shortcut icon" href="/img/favicon.ico" />
+    <link href="{basepath}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{basepath}/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{basepath}/css/master.css"/>
+    <link href="{basepath}/css/font-awesome.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{basepath}/img/favicon.ico" />
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -20,13 +20,16 @@
     <![endif]-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-    <script src="/js/knockout.min.js"></script>
-    <script src="/js/jquery.blockUI.js"></script>
-    <script src="/js/jquery.noty.packaged.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/DataModel.js"></script>
-    <script src="/js/RedisHandler.js"></script>
-    <script src="/js/lodash.min.js"></script>
+    <script src="{basepath}/js/knockout.min.js"></script>
+    <script src="{basepath}/js/jquery.blockUI.js"></script>
+    <script src="{basepath}/js/jquery.noty.packaged.min.js"></script>
+    <script src="{basepath}/js/bootstrap.min.js"></script>
+    <script src="{basepath}/js/DataModel.js"></script>
+    <script src="{basepath}/js/RedisHandler.js"></script>
+    <script src="{basepath}/js/lodash.min.js"></script>
+    <script>
+    window.basepath = '{basepath}';
+    </script>
 </head>
 
 <body>
@@ -44,11 +47,11 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li {?overview}class="active"{/overview}><a href="/">Overview<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
-                <li {?complete}class="active"{/complete}><a href="/complete">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
-                <li {?failed}class="active"{/failed}><a href="/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
-                <li {?active}class="active"{/active}><a href="/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
-                <li {?pending}class="active"{/pending}><a href="/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
+                <li {?overview}class="active"{/overview}><a href="{basepath}/">Overview<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
+                <li {?complete}class="active"{/complete}><a href="{basepath}/complete">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
+                <li {?failed}class="active"{/failed}><a href="{basepath}/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
+                <li {?active}class="active"{/active}><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
+                <li {?pending}class="active"{/pending}><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
             </ul>
         </div>
     </div>
@@ -59,11 +62,11 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li><h3>Matador</h3></li>
-                <li {?overview}class="active"{/overview}><a href="/">Overview<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
-                <li {?complete}class="active"{/complete}><a href="/complete">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
-                <li {?failed}class="active"{/failed}><a href="/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
-                <li {?active}class="active"{/active}><a href="/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
-                <li {?pending}class="active"{/pending}><a href="/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
+                <li {?overview}class="active"{/overview}><a href="{basepath}/">Overview<span data-bind="visible: stuck() != null && stuck() !== ' (0)', text: stuck" style="color: red"></span></a></li>
+                <li {?complete}class="active"{/complete}><a href="{basepath}/complete">Complete<span data-bind="visible: complete() != null, text: complete"></span></a></li>
+                <li {?failed}class="active"{/failed}><a href="{basepath}/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
+                <li {?active}class="active"{/active}><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
+                <li {?pending}class="active"{/pending}><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
             </ul>
         </div>
 
@@ -83,7 +86,9 @@
         {?counts}
         /*If counts doesn't exist we're on an error page*/
         ko.applyBindings(dataModel);
-        dataModel.fn.refreshViewModel();
+        dataModel.fn.refreshViewModel({
+            basepath: '{basepath}'
+        });
 
         dataModel.keys(keys);
 

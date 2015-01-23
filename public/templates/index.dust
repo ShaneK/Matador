@@ -46,9 +46,9 @@ Matador
         </table>
     </div>
 </div>
-<script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.js"></script>
-<script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.time.js"></script>
-<script src="/js/ChartHandler.js"></script>
+<script language="javascript" type="text/javascript" src="{basepath}/js/flot/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="{basepath}/js/flot/jquery.flot.time.js"></script>
+<script src="{basepath}/js/ChartHandler.js"></script>
 <script>
     {?memory}
     $(document).ready(function(){
