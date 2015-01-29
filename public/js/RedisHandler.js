@@ -82,7 +82,7 @@ var RedisHandler = function(){
                         layout: 'center',
                         buttons: buttons,
                         modal: true,
-                        template: '<div class="noty_message" style="width: 100%;"><span class="noty_text" style="width: 100%"></span><div class="noty_close"></div></div>'
+                        template: '<div class="noty_message" style="height: 300px; width: 100%; overflow-y: scroll;"><span class="noty_text" style="width: 100%"></span><div class="noty_close"></div></div>'
                     });
                     displayedNoty.$message.parents('li').width("50vw");
                     displayedNoty.$message.parents('.i-am-new').css('left', '25vw');
