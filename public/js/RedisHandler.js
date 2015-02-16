@@ -75,7 +75,23 @@ var RedisHandler = function(){
                     var buttons = [
                         {addClass: 'btn btn-primary', text: 'Ok', onClick: function ($noty) { $noty.close(); } },
                     ];
-                    var message = "<pre style='text-align: left'>Job ID: "+id+"\nType: "+type+"\nStatus: "+ o.status + "\n\nData:\n"+JSON.stringify(JSON.parse(response.message), null, "\t")+"</pre>";
+
+                    var response = JSON.parse(JSON.stringify(response));
+                    response.message.data = JSON.parse(response.message.data);
+                    var data = JSON.stringify(response.message.data, null, 2);
+                    var stacktrace = response.message.stacktrace;
+
+                    var message = '<pre style="text-align: left">Job ID: ' + id +
+                        '\nType: ' + type +
+                        '\nStatus: ' + o.status + 
+                        '\n\nData: ' + data;
+
+                    if (stacktrace){
+                        message = message + '\n\n<span style="color: red;">Stack Trace: \n' + stacktrace + '</span>' + '</pre>';
+                    } else {
+                        message = message + '</pre>';
+                    }
+
                     var displayedNoty = noty({
                         text: message,
                         type: 'alert',
@@ -84,6 +100,7 @@ var RedisHandler = function(){
                         modal: true,
                         template: '<div class="noty_message" style="height: 300px; width: 100%; overflow-y: scroll;"><span class="noty_text" style="width: 100%"></span><div class="noty_close"></div></div>'
                     });
+
                     displayedNoty.$message.parents('li').width("50vw");
                     displayedNoty.$message.parents('.i-am-new').css('left', '25vw');
                 }

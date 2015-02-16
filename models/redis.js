@@ -345,7 +345,7 @@ var getDataById = function(type, id){
 
     var firstPartOfKey = "bull:"+type+":";
     var multi = [];
-    redis.hget(firstPartOfKey+id, 'data', function(err, data){
+    redis.hgetall(firstPartOfKey+id, function(err, data){
         if(err){
             dfd.resolve({success: false, message: err});
         }else{
