@@ -12,18 +12,59 @@ We needed a job manager and we wanted to stick to one that only really relied on
 **Why not just use Kue?**  
 Kue has some <a href="https://github.com/LearnBoost/kue/issues/53">really old</a>, <a href="https://github.com/LearnBoost/kue/issues/130">outstanding bugs</a> that we encounted just while testing it. We tested Bull quite a bit, and couldn't reproduce these bugs. We thought it'd be easier to build an interface for Bull than to use Kue and deal with those bugs. (Notice that the first one, while closed, was never actually fixed...)
 
-**How do I get started?**  
+##Getting Started##
+
+###Installing###
+
 Easy! If you're using Bull already, then all you need to do is clone this repo and run
 
 `npm install`
 
-You will need to modify the config/development.json and config/production.json files so that it has the right values for your host and port for your redis server (also any additional redis options, such as passwords), then to start the server all you need to do is run
+###Running###
 
-`npm start`
+You can run the app standalone with
 
-Or, if you prefer,
+`node index.js`  or  `npm start`
 
-`node index.js`
+This standalone method will require you to modify the config/development.json and config/production.json files so that it has the right values for your host and port for your redis server (also any additional redis options, such as passwords).
+
+Or you can simply
+```js
+var app = require('matador/app')(options);
+app.listen(1337);
+
+// http://localhost:1337/
+```
+
+Where options is completely optional.  If not specified, it will default to the development settings in config.
+You can also pass in your own redis configuration thusly:
+
+```js
+var matador = require('matador/app')({
+  redis: {
+    host: your host name,
+    port: your port number,
+    password: optional auth password
+  }
+});
+```
+
+If you are including matador inside of another express app, declare the basepath when you mount it to the other app.
+
+```js
+var app = someExpressApp();
+var matador = require('matador/app')(options);
+
+app.use('/matador', function(req, res, next){
+  req.basepath = '/matador';
+  res.locals.basepath = '/matador';
+  next();
+}, matador);
+
+app.listen(9000);
+
+// http://localhost:9000/matador
+```
 
 If you're not using Bull, and you think you want to use Matador for some reason, then you should go check out Bull over <a href="https://github.com/OptimalBits/bull">here</a>. After that, if you decide you like it, come back and check out Matador!
 

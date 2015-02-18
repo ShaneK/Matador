@@ -14,8 +14,11 @@ var DataModel = function(){
     _self.autoRefreshId = null;
     _self.fn = {
         refreshViewModel: function(force){
+            var pathname = window.location.pathname.replace(window.basepath, '');
+            var refreshUrl = window.basepath + '/api' + (pathname !== '/' ? pathname : '');
+
             var refresh = function(){
-                $.getJSON("/api"+window.location.pathname).done(function(data){
+                $.getJSON(refreshUrl).done(function(data){
                     _self.complete(" ("+data.counts.complete+")");
                     _self.failed(" ("+data.counts.failed+")");
                     _self.active(" ("+data.counts.active+")");
