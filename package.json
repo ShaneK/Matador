@@ -1,24 +1,37 @@
 {
   "name": "bull-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Front-end web interface for Bull Job Manager",
-  "author": "Shane King",
   "main": "index.js",
+  "dependencies": {
+    "bull": "~0.2.4",
+    "dustjs-linkedin": "~2.5.1",
+    "consolidate": "~0.10.0",
+    "express": "~4.10.8",
+    "less": "~2.1.2",
+    "lodash": "~2.4.1",
+    "q": "~1.1.2",
+    "redis": "~0.12.1"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "grunt test",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "engines": {
-    "node": ">=0.10.0"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ShaneK/Matador.git"
   },
-  "dependencies": {
-    "express": "~4.10.4",
-    "redis": "~0.12.1",
-    "lodash": "~2.4.1",
-    "bull": "~0.2.4",
-    "less": "~2.1.1",
-    "q": "~1.1.2",
-    "dustjs-linkedin": "~2.5.1",
-    "consolidate": "~0.10.0"
-  }
+  "keywords": [
+    "matador",
+    "bull",
+    "redis",
+    "job"
+  ],
+  "author": "Shane King <=> (http://lotsofprojects.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ShaneK/Matador/issues"
+  },
+  "homepage": "https://github.com/ShaneK/Matador"
 }
