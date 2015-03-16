@@ -20,7 +20,7 @@ Easy! If you're using Bull already, then all you need to do is clone this repo a
 
 `npm install`
 
-###Running###
+###Running standalone from npm###
 
 You can run the app standalone with
 
@@ -29,9 +29,14 @@ You can run the app standalone with
 This standalone method will require you to modify the config/development.json and config/production.json files so that it has the right values for your host and port for your redis server (also any additional redis options, such as passwords).
 
 Or you can simply
+
+`npm install bull-ui`
+
 ```js
-var app = require('matador/app')(options);
-app.listen(1337);
+  var app = require('bull-ui/app')(options);
+  app.listen(1337, function(){
+    console.log('bull-ui started listening on port', this.address().port);
+  });
 
 // http://localhost:1337/
 ```
