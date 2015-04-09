@@ -379,7 +379,6 @@ var getQueues = function(){
     var queues = redis.keysAsync("bull:*:id").then(function(queues) {
       return Promise.all(queues.map(function(queue) {
         var name = queue.substring(0, queue.length - 3);
-        console.log(name);
         var activeJobs = redis.lrangeAsync(name + ":active", 0, -1);
         var active = activeJobs.filter(function (job) {
           return redis.getAsync(name + ":" + job + ":lock").then(function(lock) {
