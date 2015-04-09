@@ -396,7 +396,7 @@ var getQueues = function(){
         var failed = redis.scardAsync(name + ":failed");
         return Promise.join (active, stalled, pending, delayed, completed, failed, function(active, stalled, pending, delayed, completed, failed) {
           return {
-            name: name,
+            name: name.substring(5),
             active: active.length,
             stalled: stalled.length,
             pending: pending,
