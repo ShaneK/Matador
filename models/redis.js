@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require("lodash"),
+    Promise = require('bluebird'),
     q = require('q');
 
 var getActiveKeys = function(){
@@ -164,15 +165,18 @@ var getStatusCounts = function(){
             getStatus("failed").done(function(failed){
                 getStatus("wait").done(function(pendingKeys){
                     getAllKeys().done(function(allKeys){
+                      redis.keys("bull:*:id", function (err, keys) {
                         var countObject = {
                             active: active.count,
                             complete: completed.count,
                             failed: failed.count,
                             pending: pendingKeys.count,
                             total: allKeys.length,
-                            stuck: allKeys.length - (active.count+completed.count+failed.count+pendingKeys.count)
+                            stuck: allKeys.length - (active.count+completed.count+failed.count+pendingKeys.count),
+                            queues: keys.length
                         };
                         dfd.resolve(countObject);
+                      });
                     });
                 });
             });
@@ -370,6 +374,44 @@ var getProgressForKeys = function(keys){
     return dfd.promise;
 };
 
+var getQueues = function(){
+    var dfd = q.defer();
+    var queues = redis.keysAsync("bull:*:id").then(function(queues) {
+      return Promise.all(queues.map(function(queue) {
+        var name = queue.substring(0, queue.length - 3);
+        console.log(name);
+        var activeJobs = redis.lrangeAsync(name + ":active", 0, -1);
+        var active = activeJobs.filter(function (job) {
+          return redis.getAsync(name + ":" + job + ":lock").then(function(lock) {
+            return lock != null;
+          });
+        });
+        var stalled = activeJobs.filter(function (job) {
+          return redis.getAsync(name + ":" + job + ":lock").then(function(lock) {
+            return lock == null;
+          });
+        });
+        var pending = redis.llenAsync(name + ":wait");
+        var delayed = redis.zcardAsync(name + ":delayed");
+        var completed = redis.scardAsync(name + ":completed");
+        var failed = redis.scardAsync(name + ":failed");
+        return Promise.join (active, stalled, pending, delayed, completed, failed, function(active, stalled, pending, delayed, completed, failed) {
+          return {
+            name: name,
+            active: active.length,
+            stalled: stalled.length,
+            pending: pending,
+            delayed: delayed,
+            completed: completed,
+            failed: failed
+          };
+        });
+      }));
+    }).then(dfd.resolve);
+    return dfd.promise;
+};
+
+
 module.exports.getAllKeys = getAllKeys; //Returns all JOB keys in string form (ex: bull:video transcoding:101)
 module.exports.formatKeys = formatKeys; //Returns all keys in object form, with status applied to object. Ex: {id: 101, type: "video transcoding", status: "pending"}
 module.exports.getStatus = getStatus; //Returns indexes of completed jobs
@@ -382,3 +424,4 @@ module.exports.makePendingById = makePendingById; //Makes a job with a specific 
 module.exports.deleteJobByStatus = deleteJobByStatus; //Deletes all jobs in a specific status
 module.exports.deleteJobById = deleteJobById; //Deletes a job by ID. Requires type as the first parameter and ID as the second.
 module.exports.getProgressForKeys = getProgressForKeys; //Gets the progress for the keys passed in
+module.exports.getQueues = getQueues //Get information about all the queues in the redis instance

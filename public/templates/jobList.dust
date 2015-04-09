@@ -6,6 +6,7 @@ Matador
 
 {<body}
 <h1 class="page-header">{type} <span class="btn-group">
+    <span>
         <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="fa fa-cog"></i> <span class="caret"></span></button>
         <ul class="dropdown-menu">
             <li><a href="#" onclick="redisHandler.fn.deleteByStatus('{type}');">Delete all {type} jobs</a></li>

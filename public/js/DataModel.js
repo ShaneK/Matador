@@ -7,6 +7,7 @@ var DataModel = function(){
     _self.active = ko.observable(null);
     _self.pending = ko.observable(null);
     _self.stuck = ko.observable(null);
+    _self.queues = ko.observable(null);
     _self.keys = ko.observableArray([]);
     _self.memory = ko.observable({});
     _self.peakMemory = ko.observable("");

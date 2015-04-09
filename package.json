@@ -4,9 +4,10 @@
   "description": "Front-end web interface for Bull Job Manager",
   "main": "index.js",
   "dependencies": {
+    "bluebird": "^2.9.24",
     "bull": "~0.2.4",
-    "dustjs-linkedin": "~2.5.1",
     "consolidate": "~0.10.0",
+    "dustjs-linkedin": "~2.5.1",
     "express": "~4.10.8",
     "less": "~2.1.2",
     "lodash": "~2.4.1",

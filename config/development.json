@@ -1,8 +1,9 @@
 {
     "port": 1337,
     "redis": {
-        "host": "localhost",
-        "port": 6379
+        "host": "pub-redis-10339.eu-west-1-2.1.ec2.garantiadata.com",
+        "password": "OC0sSX1Aa3d8Uj5xX1hpOFlvc3NeIDYqa3txTDxrZ3U1Q0BMa",
+        "port": 10339
     },
     "errorPages": {
         "404": "errors/404",
