@@ -1,0 +1,37 @@
+{>"layouts/master" /}
+
+{<title}
+Matador
+{/title}
+
+{<body}
+<h1 class="page-header">{type} <span class="btn-group">
+</h1>
+<div class="table-responsive" data-bind="visible: keys().length > 0">
+    <div id="jobData"></div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Pending</th>
+            <th>Stalled</th>
+            <th>Delayed</th>
+            <th>Active</th>
+            <th>Completed</th>
+            <th>Failed</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: keys">
+        <tr>
+            <td data-bind="text: name"></td>
+            <td data-bind="text: pending"></td>
+            <td data-bind="text: stalled"></td>
+            <td data-bind="text: delayed"></td>
+            <td data-bind="text: active"></td>
+            <td data-bind="text: completed"></td>
+            <td data-bind="text: failed"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{/body}
