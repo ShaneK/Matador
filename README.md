@@ -45,7 +45,7 @@ Where options is completely optional.  If not specified, it will default to the 
 You can also pass in your own redis configuration thusly:
 
 ```js
-var matador = require('matador/app')({
+var matador = require('bull-ui/app')({
   redis: {
     host: your host name,
     port: your port number,
@@ -58,7 +58,7 @@ If you are including matador inside of another express app, declare the basepath
 
 ```js
 var app = someExpressApp();
-var matador = require('matador/app')(options);
+var matador = require('bull-ui/app')(options);
 
 app.use('/matador', function(req, res, next){
   req.basepath = '/matador';
