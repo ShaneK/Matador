@@ -48,7 +48,6 @@ module.exports = function (app) {
                 model.error = error;
                 model.payload = payload;
                 model.queue = queue;
-                console.log('model:', model);
                 return res.render('newJob', model);
             });
         } else {
