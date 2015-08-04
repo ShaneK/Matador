@@ -51,7 +51,7 @@ module.exports = function (app) {
                 return res.render('newJob', model);
             });
         } else {
-            bullModel.createJob(queue, payloadObject).done(function(){
+            bullModel.createJob(req.app.locals.options.redis, queue, payloadObject).done(function(){
                 getNewJobModel(req, res).done(function(model){
                     return res.render('newJob', model);
                 });
