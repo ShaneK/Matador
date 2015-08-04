@@ -53,6 +53,7 @@
                 <li {?active}class="active"{/active}><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
                 <li {?pending}class="active"{/pending}><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
                 <li {?queues}class="active"{/queues}><a href="{basepath}/pending">Queues<span data-bind="visible: queues() != null, text: queues"></span></a></li>
+                <li {?newjob}class="active"{/newjob}><a href="{basepath}/newjob">New Job</a></li>
             </ul>
         </div>
     </div>
@@ -69,6 +70,7 @@
                 <li {?active}class="active"{/active}><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
                 <li {?pending}class="active"{/pending}><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
                 <li {?queues}class="active"{/queues}><a href="{basepath}/queues">Queues<span data-bind="visible: queues() != null, text: queues"></span></a></li>
+                <li {?newjob}class="active"{/newjob}><a href="{basepath}/newjob">New Job</a></li>
             </ul>
         </div>
 
