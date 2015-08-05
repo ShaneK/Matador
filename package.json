@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "bluebird": "^2.9.24",
+    "body-parser": "^1.13.3",
     "bull": "~0.2.4",
     "consolidate": "~0.10.0",
     "dustjs-linkedin": "~2.5.1",
