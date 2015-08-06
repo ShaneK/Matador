@@ -127,6 +127,12 @@ var RedisHandler = function(){
                     $.unblockUI();
                 });
             });
+        },
+        createJob: function(){
+            var data = $("form1").serialize();
+            $.post(window.basepath + "/api/jobs/create", data).done(function(response){
+
+            });
         }
     };
 
