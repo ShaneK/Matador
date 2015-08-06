@@ -127,6 +127,24 @@ var RedisHandler = function(){
                     $.unblockUI();
                 });
             });
+        },
+        createJob: function(){
+            var data = $("#newjob").serializeArray();
+            var url = window.basepath + "/api/jobs/create";
+            $.ajax({
+                type:'POST',
+                url:url,
+                data: data,
+                success: function(){
+                    // clear form
+                    $('#newjob').trigger("reset");
+                    $('.alert').html('').addClass('hidden');
+                },
+                error: function(response){
+                    // display error
+                    $('.alert').html('<strong>Error!</strong> ' + response.responseText).removeClass('hidden');
+                }
+            });
         }
     };
 
