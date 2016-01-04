@@ -21,7 +21,8 @@ module.exports = function (app) {
 
     app.get('/api/jobs/delete/status/:type', function (req, res) {
         var type = req.param("type");
-        redisModel.deleteJobByStatus(type).done(function(results){
+        var queueName = req.param("queueName") ? req.param("queueName") : null;
+        redisModel.deleteJobByStatus(type, queueName).done(function(results){
             res.json(results);
         });
     });

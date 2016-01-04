@@ -4,33 +4,37 @@ var _ = require("lodash"),
     Promise = require('bluebird'),
     q = require('q');
 
-var getActiveKeys = function(){
+var getActiveKeys = function(queueName){
     var dfd = q.defer();
-    redis.keys("bull:*:active", function(err, keys){
+    queueName = queueName ? queueName : '*';
+    redis.keys("bull:" + queueName + ":active", function(err, keys){
         dfd.resolve(keys);
     });
     return dfd.promise;
 };
 
-var getCompletedKeys = function(){
+var getCompletedKeys = function(queueName){
     var dfd = q.defer();
-    redis.keys("bull:*:completed", function(err, keys){
+    queueName = queueName ? queueName : '*';
+    redis.keys("bull:" + queueName + ":completed", function(err, keys){
         dfd.resolve(keys);
     });
     return dfd.promise;
 };
 
-var getFailedKeys = function(){
+var getFailedKeys = function(queueName){
     var dfd = q.defer();
-    redis.keys("bull:*:failed", function(err, keys){
+    queueName = queueName ? queueName : '*';
+    redis.keys("bull:" + queueName + ":failed", function(err, keys){
         dfd.resolve(keys);
     });
     return dfd.promise;
 };
 
-var getWaitingKeys = function(){
+var getWaitingKeys = function(queueName){
     var dfd = q.defer();
-    redis.keys("bull:*:wait", function(err, keys){
+    queueName = queueName ? queueName : '*';
+    redis.keys("bull:" + queueName + ":wait", function(err, keys){
         dfd.resolve(keys);
     });
     return dfd.promise;
@@ -55,7 +59,7 @@ var getStuckKeys = function(){
     return dfd.promise;
 };
 
-var getStatus = function(status){
+var getStatus = function(status, queueName){
     var dfd = q.defer();
     var getStatusKeysFunction = null;
     if(status === "complete"){
@@ -73,7 +77,7 @@ var getStatus = function(status){
         return;
     }
 
-    getStatusKeysFunction().done(function(keys){
+    getStatusKeysFunction(queueName).done(function(keys){
         var multi = [];
         var statusKeys = [];
         for(var i = 0, ii = keys.length; i < ii; i++){
@@ -286,7 +290,7 @@ var makePendingById = function(type, id){
     return dfd.promise;
 };
 
-var deleteJobByStatus = function(type){
+var deleteJobByStatus = function(type, queueName){
     type = type.toLowerCase();
     var validTypes = ['active', 'complete', 'failed', 'wait']; //I could add stuck, but I won't support mass modifying "stuck" jobs because it's very possible for things to be in a "stuck" state temporarily, while transitioning between states
     var dfd = q.defer();
@@ -294,7 +298,7 @@ var deleteJobByStatus = function(type){
         dfd.resolve({success:false, message:"Invalid type: "+type+" not in list of supported types"});
         return dfd.promise;
     }
-    getStatus(type).done(function(allKeys){
+    getStatus(type, queueName).done(function(allKeys){
         var multi = [];
         var allKeyObjects = Object.keys(allKeys.keys);
         for(var i = 0, ii = allKeyObjects.length; i < ii; i++){
@@ -313,6 +317,9 @@ var deleteJobByStatus = function(type){
             if(err){
                 dfd.resolve({success: false, message: err});
             }else{
+              if (queueName) {
+                dfd.resolve({success: true, message: "Successfully deleted all jobs of status " + type +" of queue " + queueName + "."});
+              }
                 dfd.resolve({success: true, message: "Successfully deleted all jobs of status " + type +"."});
             }
         });
