@@ -6,14 +6,14 @@
   "dependencies": {
     "bluebird": "^2.9.24",
     "body-parser": "^1.13.3",
-    "bull": "~0.2.4",
+    "bull": "^0.7.2",
     "consolidate": "~0.10.0",
     "dustjs-linkedin": "~2.5.1",
     "express": "~4.10.8",
     "less": "~2.1.2",
     "lodash": "~2.4.1",
     "q": "~1.1.2",
-    "redis": "~0.12.1"
+    "redis": "^2.5.3"
   },
   "devDependencies": {},
   "scripts": {
