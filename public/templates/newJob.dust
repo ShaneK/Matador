@@ -1,0 +1,26 @@
+{>"layouts/master" /}
+
+{<title}
+Matador
+{/title}
+
+{<body}
+<h1 class="page-header">New  Job</h1>
+
+    <form role="form" id="newjob">
+      <div class="form-group">
+        <label for="queue">Queue:</label>
+        <br>
+        <input name="queue" id="queue" class="form-control"></input>
+        <br>
+        <label for="payload">Payload:</label>
+        <br>
+        <textarea name="payload" id="textarea"  class="form-control" cols="45" rows="5" ></textarea>
+        <br>
+        <input onclick="redisHandler.fn.createJob()" id="button" class="btn btn-default" value="Create" />
+      </div>
+    </form>
+
+    <div class="alert alert-danger hidden"></div>
+
+{/body}

@@ -1,6 +1,6 @@
 'use strict';
 
-
+var bullModel = require('../models/bull');
 var redisModel = require('../models/redis');
 
 module.exports = function (app) {
@@ -40,5 +40,29 @@ module.exports = function (app) {
         redisModel.getDataById(type, id).done(function(results){
             res.json(results);
         });
+    });
+
+    app.post('/api/jobs/create', function(req, res){
+        var error;
+        var payloadObject;
+        var payload = req.body.payload;
+        var queue = req.body && req.body.queue;
+        if (!queue){
+            error = 'No queue specified';
+        }
+        if (!error){
+            try {
+                payloadObject = JSON.parse(req.body.payload);
+            } catch (e) {
+                error = 'Invalid JSON';
+            }
+        }
+        if (error) {
+            return res.status(400).send(error);
+        } else {
+            bullModel.createJob(req.app.locals.options.redis, queue, payloadObject)
+                    .done(function(){return res.status(200).send('OK');});
+        }
+
     });
 };
