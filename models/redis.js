@@ -81,7 +81,10 @@ var getStatus = function(status, queueName){
         var multi = [];
         var statusKeys = [];
         for(var i = 0, ii = keys.length; i < ii; i++){
-            statusKeys[keys[i].split(":")[1]] = []; // This creates an array/object thing with keys of the job type
+             var arr = keys[i].split(":");
+            var queueName = arr.slice(1, arr.length - 1);
+            var queue = queueName.join(":");
+            statusKeys[queue] = []; // This creates an array/object thing with keys of the job type
             if(status === "active" || status === "wait"){
                 multi.push(['lrange', keys[i], 0, -1]);
             }else{
@@ -141,7 +144,6 @@ var getJobsInList = function(list){
     if(!list) return;
     var dfd = q.defer();
     var jobs = [];
-
     if(list["keys"]){
         //New list type
         var keys = list["keys"];
@@ -179,7 +181,7 @@ var getStatusCounts = function(){
                             stuck: allKeys.length - (active.count+completed.count+failed.count+pendingKeys.count),
                             queues: keys.length
                         };
-                        dfd.resolve(countObject);
+                       dfd.resolve(countObject);
                       });
                     });
                 });
@@ -191,7 +193,6 @@ var getStatusCounts = function(){
 
 var formatKeys = function(keys){
     if(!keys) return;
-
     var dfd = q.defer();
     getStatus("failed").done(function(failedJobs){
         getStatus("complete").done(function(completedJobs){
@@ -199,7 +200,13 @@ var formatKeys = function(keys){
                 getStatus("wait").done(function(pendingJobs){
                     var keyList = [];
                     for(var i = 0, ii = keys.length; i < ii; i++){
-                        var explodedKeys = keys[i].split(":");
+                        var arr = keys[i].split(":");
+                        var queueName = arr.slice(1, arr.length - 1);
+                        var queue = queueName.join(":");
+                        var explodedKeys = {};
+                        explodedKeys[0] = arr[0];
+                        explodedKeys[1] = queue;
+                        explodedKeys[2] = arr[arr.length-1];
                         var status = "stuck";
                         if(activeJobs.keys[explodedKeys[1]] && activeJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "active";
                         else if(completedJobs.keys[explodedKeys[1]] && completedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "complete";
@@ -207,6 +214,7 @@ var formatKeys = function(keys){
                         else if(pendingJobs.keys[explodedKeys[1]] && pendingJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "pending";
                         keyList.push({id: explodedKeys[2], type: explodedKeys[1], status: status});
                     }
+                   
                     keyList = _.sortBy(keyList, function(key){return parseInt(key.id);});
                     dfd.resolve(keyList);
                 });
@@ -236,7 +244,6 @@ var makePendingByType = function(type){
     type = type.toLowerCase();
     var validTypes = ['active', 'complete', 'failed', 'wait']; //I could add stuck, but I won't support mass modifying "stuck" jobs because it's very possible for things to be in a "stuck" state temporarily, while transitioning between states
     var dfd = q.defer();
-    console.log(validTypes.indexOf(type));
     if(validTypes.indexOf(type) === -1) {
         dfd.resolve({success:false, message:"Invalid type: "+type+" not in list of supported types"});
         return dfd.promise;
