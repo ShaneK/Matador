@@ -19,6 +19,7 @@ Matador
             <th>Active</th>
             <th>Completed</th>
             <th>Failed</th>
+            <th>Options</th>
         </tr>
         </thead>
         <tbody data-bind="foreach: keys">
@@ -30,6 +31,20 @@ Matador
             <td data-bind="text: active"></td>
             <td data-bind="text: completed"></td>
             <td data-bind="text: failed"></td>
+            <td>
+              <div class="dropdown">
+                <button data-toggle="dropdown" data-bind="attr: { id: 'queue_dropdown_' + $index() }" class="btn btn-default dropdown-toggle">
+                  <i class="fa fa-cog"></i> 
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" data-bind="attr: { "aria-labelledby": 'queue_dropdown_' + $index() }">
+                    <li><a href="#" data-bind="click: function(data, event) { redisHandler.fn.deleteByStatus('wait', data) }">Delete All Pending</a></li>
+                    <li><a href="#" data-bind="click: function(data, event) { redisHandler.fn.deleteByStatus('active', data) }">Delete All Active</a></li>
+                    <li><a href="#" data-bind="click: function(data, event) { redisHandler.fn.deleteByStatus('complete', data) }">Delete All Completed</a></li>
+                    <li><a href="#" data-bind="click: function(data, event) { redisHandler.fn.deleteByStatus('failed', data) }">Delete All Failed</a></li>
+                </ul>
+              </div>
+            </td>
         </tr>
         </tbody>
     </table>

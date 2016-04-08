@@ -31,7 +31,8 @@ var RedisHandler = function(){
                 });
             });
         },
-        deleteByStatus: function(status){
+        deleteByStatus: function(status, obj){
+            var queueName = obj.name;
             status = status.toLowerCase();
             var statusDisplay = status;
             if(status === "pending"){
@@ -40,7 +41,13 @@ var RedisHandler = function(){
             }
             _self.util.notyConfirm("Are you sure you want to delete <strong>all</strong> jobs with the status "+statusDisplay+"?", function(){
                 _self.util.blockUI();
-                $.getJSON(window.basepath + "/api/jobs/delete/status/"+status).done(function(response){
+                var targetUrl = null;
+                if (queueName) {
+                  targetUrl = window.basepath + "/api/jobs/delete/status/"+status + "?queueName=" + queueName;
+                } else {
+                  targetUrl = window.basepath + "/api/jobs/delete/status/"+status;
+                }
+                $.getJSON(targetUrl).done(function(response){
                     if(status !== statusDisplay && response.success){
                         response.message = response.message.replace(status, statusDisplay);
                     }
