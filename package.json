@@ -1,15 +1,15 @@
 {
   "name": "bull-ui",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Front-end web interface for Bull Job Manager",
   "main": "index.js",
   "dependencies": {
     "bluebird": "^2.9.24",
     "body-parser": "^1.13.3",
-    "bull": "^0.7.2",
+    "bull": "^1.0.0-rc1",
     "consolidate": "~0.10.0",
     "dustjs-linkedin": "~2.5.1",
-    "express": "~4.10.8",
+    "express": "^4.13.4",
     "less": "~2.1.2",
     "lodash": "~2.4.1",
     "q": "~1.1.2",

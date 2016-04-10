@@ -5,39 +5,39 @@ var redisModel = require('../models/redis');
 
 module.exports = function (app) {
     app.get('/api/jobs/pending/status/:type', function (req, res) {
-        var type = req.param("type");
+        var type = req.params['type'];
         redisModel.makePendingByType(type).done(function(results){
             res.json(results);
         });
     });
 
     app.get('/api/jobs/pending/id/:type/:id', function (req, res) {
-        var id = req.param("id"),
-            type = req.param("type");
+        var id = req.params['id'],
+            type = req.params['type'];
         redisModel.makePendingById(type, id).done(function(results){
             res.json(results);
         });
     });
 
     app.get('/api/jobs/delete/status/:type', function (req, res) {
-        var type = req.param("type");
-        var queueName = req.param("queueName") ? req.param("queueName") : null;
+        var type = req.params['type'];
+        var queueName = req.params['queueName'] ? req.params['queueName'] : null;
         redisModel.deleteJobByStatus(type, queueName).done(function(results){
             res.json(results);
         });
     });
 
     app.get('/api/jobs/delete/id/:type/:id', function (req, res) {
-        var id = req.param("id"),
-            type = req.param("type");
+        var id = req.params['id'],
+            type = req.params['type'];
         redisModel.deleteJobById(type, id).done(function(results){
             res.json(results);
         });
     });
 
     app.get('/api/jobs/info/:type/:id', function(req, res){
-        var id = req.param("id"),
-            type = req.param("type");
+        var id = req.params['id'],
+            type = req.params['type'];
         redisModel.getDataById(type, id).done(function(results){
             res.json(results);
         });
