@@ -52,6 +52,7 @@
                 <li {?failed}class="active"{/failed}><a href="{basepath}/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
                 <li {?active}class="active"{/active}><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
                 <li {?pending}class="active"{/pending}><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
+                <li {?delayed}class="active"{/delayed}><a href="{basepath}/delayed">Delayed<span data-bind="visible: delayed() != null, text: delayed"></span></a></li>
                 <li {?queues}class="active"{/queues}><a href="{basepath}/pending">Queues<span data-bind="visible: queues() != null, text: queues"></span></a></li>
                 <li {?newjob}class="active"{/newjob}><a href="{basepath}/newjob">New Job</a></li>
             </ul>
@@ -69,6 +70,7 @@
                 <li {?failed}class="active"{/failed}><a href="{basepath}/failed">Failed<span data-bind="visible: failed() != null, text: failed"></span></a></li>
                 <li {?active}class="active"{/active}><a href="{basepath}/active">Active<span data-bind="visible: active() != null, text: active"></span></a></li>
                 <li {?pending}class="active"{/pending}><a href="{basepath}/pending">Pending<span data-bind="visible: pending() != null, text: pending"></span></a></li>
+                <li {?delayed}class="active"{/delayed}><a href="{basepath}/delayed">Delayed<span data-bind="visible: delayed() != null, text: delayed"></span></a></li>
                 <li {?queues}class="active"{/queues}><a href="{basepath}/queues">Queues<span data-bind="visible: queues() != null, text: queues"></span></a></li>
                 <li {?newjob}class="active"{/newjob}><a href="{basepath}/newjob">New Job</a></li>
             </ul>
@@ -83,7 +85,7 @@
 <script type="text/javascript">
     var keys = [];
     {#keys}
-    keys.push({id: "{id}", type: "{type}", status: "{status}"{?progress}, progress: "{progress}"{/progress}});
+    keys.push({id: "{id}", type: "{type}", status: "{status}"{?progress}, progress: "{progress}"{/progress}{?delayUntil}, delayUntil: "{delayUntil}"{/delayUntil}});
     {/keys}
 
     $(document).on('ready', function(){
@@ -100,6 +102,7 @@
         dataModel.failed(" ({counts.failed})");
         dataModel.active(" ({counts.active})");
         dataModel.pending(" ({counts.pending})");
+        dataModel.delayed(" ({counts.delayed})");
         dataModel.stuck(" ({counts.stuck})");
         {/counts}
     });

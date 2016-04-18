@@ -6,6 +6,7 @@ var DataModel = function(){
     _self.failed = ko.observable(null);
     _self.active = ko.observable(null);
     _self.pending = ko.observable(null);
+    _self.delayed = ko.observable(null);
     _self.stuck = ko.observable(null);
     _self.queues = ko.observable(null);
     _self.keys = ko.observableArray([]);
@@ -24,6 +25,7 @@ var DataModel = function(){
                     _self.failed(" ("+data.counts.failed+")");
                     _self.active(" ("+data.counts.active+")");
                     _self.pending(" ("+data.counts.pending+")");
+                    _self.delayed(" ("+data.counts.delayed+")");
                     _self.stuck(" ("+data.counts.stuck+")");
                     _self.keys(data.keys);
                     if(data.memory){
