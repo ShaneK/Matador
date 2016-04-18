@@ -421,6 +421,11 @@ var getDelayTimeForKeys = function(keys){
     }
     redis.multi(multi).exec(function(err, results){
         for(var i = 0, ii = keys.length; i < ii; i++){
+            // Bull packs delay expire timestamp and job id into a single number. This is mostly
+            // needed to preserve execution order – first part of the resulting number contains
+            // the timestamp and the end contains the incrementing job id. We don't care about
+            // the id, so we can just remove this part from the value.
+            // https://github.com/OptimalBits/bull/blob/e38b2d70de1892a2c7f45a1fed243e76fd91cfd2/lib/scripts.js#L90
             keys[i].delayUntil = new Date(Math.floor(results[i]/0x1000));
         }
         dfd.resolve(keys);
