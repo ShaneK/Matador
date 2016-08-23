@@ -15,7 +15,7 @@ Matador
         <br>
         <label for="payload">Payload:</label>
         <br>
-        <textarea name="payload" id="textarea"  class="form-control" cols="45" rows="5" ></textarea>
+        <textarea name="payload" id="textarea" style="font-family: monospace;" class="form-control" cols="45" rows="5" ></textarea>
         <br>
         <input onclick="redisHandler.fn.createJob()" id="button" class="btn btn-default" value="Create" />
       </div>
