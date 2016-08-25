@@ -12,6 +12,8 @@ var DataModel = function(){
     _self.keys = ko.observableArray([]);
     _self.memory = ko.observable({});
     _self.peakMemory = ko.observable("");
+    _self.refreshTimeout = ko.observable(0);
+    _self.fetchingUpdates = ko.observable(false);
 
     _self.autoRefreshId = null;
     _self.fn = {
@@ -19,7 +21,9 @@ var DataModel = function(){
             var pathname = window.location.pathname.replace(window.basepath, '');
             var refreshUrl = window.basepath + '/api' + (pathname !== '/' ? pathname : '');
 
+            var paused = true;
             var refresh = function(){
+                _self.fetchingUpdates(true);
                 $.getJSON(refreshUrl).done(function(data){
                     _self.complete(" ("+data.counts.complete+")");
                     _self.failed(" ("+data.counts.failed+")");
@@ -32,13 +36,33 @@ var DataModel = function(){
                         _self.memory(data.memory.usage);
                         _self.peakMemory(data.memory.peak.human);
                     }
+                    _self.fetchingUpdates(false);
+                    paused = false;
                 });
             };
+
+            var counter = 0;
+            var refreshTimer = function(pollInterval) {
+                if (paused) return;
+
+                if (counter % pollInterval === 0) {
+                    paused = true;
+                    _self.refreshTimeout(1);
+                    refresh();
+                } else {
+                    _self.refreshTimeout(((counter % pollInterval) / pollInterval));
+                }
+
+                counter++;
+            };
+
             if(force){
                 clearInterval(_self.autoRefreshId);
-                refresh();
+                paused = false;
+                refreshTimer(0);
             }
-            _self.autoRefreshId = setInterval(refresh, 2500);
+
+            _self.autoRefreshId = setInterval(refreshTimer, 100, 20);
         }
     }
 

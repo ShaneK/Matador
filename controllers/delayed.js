@@ -13,23 +13,25 @@ module.exports = function (app) {
             redisModel.getJobsInList(delayed).done(function(keys){
                 redisModel.formatKeys(keys).done(function(formattedKeys){
                     redisModel.getDelayTimeForKeys(formattedKeys).done(function(keyList){
-                        redisModel.getStatusCounts().done(function(countObject){
-													keyList = keyList.map(function (key) {
-														var numSecondsUntil = moment(new Date(key.delayUntil)).diff(moment(), 'seconds');
-														var formattedDelayUntil = 'in ' + numSecondsUntil + ' seconds';
-														if (numSecondsUntil === 1) {
-															formattedDelayUntil = 'in ' + numSecondsUntil + ' second';
-														}
-														else if (numSecondsUntil > 60) {
-															formattedDelayUntil = moment(new Date(key.delayUntil)).fromNow();
-														}
+                        redisModel.getDataForKeys(keyList).done(function(keyList) {
+                            redisModel.getStatusCounts().done(function(countObject){
+                              keyList = keyList.map(function (key) {
+                                var numSecondsUntil = moment(new Date(key.delayUntil)).diff(moment(), 'seconds');
+                                var formattedDelayUntil = 'in ' + numSecondsUntil + ' seconds';
+                                if (numSecondsUntil === 1) {
+                                  formattedDelayUntil = 'in ' + numSecondsUntil + ' second';
+                                }
+                                else if (numSecondsUntil > 60) {
+                                  formattedDelayUntil = moment(new Date(key.delayUntil)).fromNow();
+                                }
 
-														key.delayUntil = formattedDelayUntil;
-														return key;
+                                key.delayUntil = formattedDelayUntil;
+                                return key;
 
-													});
-                            var model = { keys: keyList, counts: countObject, delayed: true, type: "Delayed" };
-                            dfd.resolve(model);
+                              });
+                                var model = { keys: keyList, counts: countObject, delayed: true, type: "Delayed" };
+                                dfd.resolve(model);
+                            });
                         });
                     });
                 });
