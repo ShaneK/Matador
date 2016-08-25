@@ -88,11 +88,19 @@ var RedisHandler = function(){
                     response.message.data = JSON.parse(response.message.data);
                     var data = JSON.stringify(response.message.data, null, 2);
                     var stacktrace = response.message.stacktrace;
+                    var returnvalue = response.message.returnvalue;
+
+                    try {
+                        returnvalue = JSON.stringify(JSON.parse(returnvalue), null, 2);
+                    } catch (e) {
+                        console.warn('Cannot prettify returnvalue', err);
+                    }
 
                     var message = '<pre style="text-align: left">Job ID: ' + id +
                         '\nType: ' + type +
                         '\nStatus: ' + o.status +
-                        '\n\nData: ' + data;
+                        '\n\nData: ' + data +
+                        '\n\nReturn value: ' + returnvalue;
 
                     if (stacktrace){
                         message = message + '\n\n<span style="color: red;">Stack Trace: \n' + stacktrace + '</span>' + '</pre>';
