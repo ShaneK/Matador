@@ -30,7 +30,10 @@ Matador
         <tbody data-bind="foreach: keys">
         <tr>
             <td data-bind="text: id"></td>
-            <td data-bind="text: type"></td>
+            <td>
+                <div data-bind="text: type"></div>
+                <div data-bind="visible: typeof data != 'undefined', text: typeof data != 'undefined' ? data : ''" style="font-size: 80%; color: rgba(0, 0, 0, 0.5)"></div>
+            </td>
             <td data-bind="text: status"></td>
             <td data-bind="visible: keys.length > 0 && keys[0].progress != undefined, text: keys[0].progress != undefined ? progress : ''"></td>
             <td data-bind="visible: keys.length > 0 && keys[0].delayUntil != undefined, text: keys[0].delayUntil != undefined ? delayUntil : ''"></td>

@@ -413,6 +413,36 @@ var getProgressForKeys = function(keys){
     return dfd.promise;
 };
 
+// var dfd = q.defer();
+// if(!id) dfd.resolve({success: false, message: "There was no ID provided."});
+// if(!type) dfd.resolve({success: false, message: "There was no type provided."});
+//
+// var firstPartOfKey = "bull:"+type+":";
+// var multi = [];
+// redis.hgetall(firstPartOfKey+id, function(err, data){
+//     if(err){
+//         dfd.resolve({success: false, message: err});
+//     }else{
+//         dfd.resolve({success: true, message: data});
+//     }
+// });
+// return dfd.promise;
+
+var getDataForKeys = function(keys){
+    var dfd = q.defer();
+    var multi = [];
+    for(var i = 0, ii = keys.length; i < ii; i++){
+        multi.push(["hgetall", "bull:"+keys[i].type+":"+keys[i].id]);
+    }
+    redis.multi(multi).exec(function(err, results){
+        for(var i = 0, ii = keys.length; i < ii; i++){
+            keys[i].data = results[i] ? results[i].data : null;
+        }
+        dfd.resolve(keys);
+    });
+    return dfd.promise;
+};
+
 var getDelayTimeForKeys = function(keys){
     var dfd = q.defer();
     var multi = [];
@@ -482,5 +512,6 @@ module.exports.makePendingById = makePendingById; //Makes a job with a specific 
 module.exports.deleteJobByStatus = deleteJobByStatus; //Deletes all jobs in a specific status
 module.exports.deleteJobById = deleteJobById; //Deletes a job by ID. Requires type as the first parameter and ID as the second.
 module.exports.getProgressForKeys = getProgressForKeys; //Gets the progress for the keys passed in
+module.exports.getDataForKeys = getDataForKeys; //Gets the progress for the keys passed in
 module.exports.getDelayTimeForKeys = getDelayTimeForKeys; // Gets the delay end time for the keys passed in
 module.exports.getQueues = getQueues //Get information about all the queues in the redis instance

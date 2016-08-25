@@ -11,10 +11,12 @@ module.exports = function (app) {
         redisModel.getStatus("active").done(function(active){
             redisModel.getJobsInList(active).done(function(keys){
                 redisModel.formatKeys(keys).done(function(formattedKeys){
-                    redisModel.getProgressForKeys(formattedKeys).done(function(keyList){
-                        redisModel.getStatusCounts().done(function(countObject){
-                            var model = { keys: keyList, counts: countObject, active: true, type: "Active" };
-                            dfd.resolve(model);
+                    redisModel.getDataForKeys(formattedKeys).done(function(keyList) {
+                        redisModel.getProgressForKeys(keyList).done(function (keyList) {
+                            redisModel.getStatusCounts().done(function (countObject) {
+                                var model = {keys: keyList, counts: countObject, active: true, type: "Active"};
+                                dfd.resolve(model);
+                            });
                         });
                     });
                 });
