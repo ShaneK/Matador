@@ -20,7 +20,8 @@
     <![endif]-->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-    <script src="{basepath}/js/knockout.min.js"></script>
+    <!--<script src="{basepath}/js/knockout.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"></script>
     <script src="{basepath}/js/jquery.blockUI.js"></script>
     <script src="{basepath}/js/jquery.noty.packaged.min.js"></script>
     <script src="{basepath}/js/bootstrap.min.js"></script>
@@ -73,6 +74,10 @@
                 <li {?delayed}class="active"{/delayed}><a href="{basepath}/delayed">Delayed<span data-bind="visible: delayed() != null, text: delayed"></span></a></li>
                 <li {?queues}class="active"{/queues}><a href="{basepath}/queues">Queues<span data-bind="visible: queues() != null, text: queues"></span></a></li>
                 <li {?newjob}class="active"{/newjob}><a href="{basepath}/newjob">New Job</a></li>
+                <li style="text-align: center">
+                    <progress data-bind="visible: !fetchingUpdates(), attr: { value: refreshTimeout() }" style="width: 50%; height: 10px;"></progress>
+                    <div data-bind="visible: fetchingUpdates()">Fetching updates...</div>
+                </li>
             </ul>
         </div>
 

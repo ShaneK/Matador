@@ -10,10 +10,12 @@ module.exports = function (app) {
         var dfd = q.defer();
         redisModel.getStatus("failed").done(function(failed){
             redisModel.getJobsInList(failed).done(function(keys){
-                redisModel.formatKeys(keys).done(function(keyList){
-                    redisModel.getStatusCounts().done(function(countObject){
-                        var model = { keys: keyList, counts: countObject, failed: true, type: "Failed"};
-                        dfd.resolve(model);
+                redisModel.formatKeys(keys).done(function(formattedKeys){
+                    redisModel.getDataForKeys(formattedKeys).done(function(keyList) {
+                        redisModel.getStatusCounts().done(function (countObject) {
+                            var model = {keys: keyList, counts: countObject, failed: true, type: "Failed"};
+                            dfd.resolve(model);
+                        });
                     });
                 });
             });
