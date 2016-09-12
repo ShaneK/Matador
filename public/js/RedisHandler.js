@@ -93,7 +93,7 @@ var RedisHandler = function(){
                     try {
                         returnvalue = JSON.stringify(JSON.parse(returnvalue), null, 2);
                     } catch (e) {
-                        console.warn('Cannot prettify returnvalue', err);
+                        console.warn('Cannot prettify returnvalue', e);
                     }
 
                     var message = '<pre style="text-align: left">Job ID: ' + id +
