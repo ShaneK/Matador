@@ -225,11 +225,12 @@ var formatKeys = function(keys){
                             explodedKeys[1] = queue;
                             explodedKeys[2] = arr[arr.length-1];
                             var status = "stuck";
-                            if(activeJobs.keys[explodedKeys[1]] && activeJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "active";
-                            else if(completedJobs.keys[explodedKeys[1]] && completedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "complete";
-                            else if(failedJobs.keys[explodedKeys[1]] && failedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "failed";
-                            else if(pendingJobs.keys[explodedKeys[1]] && pendingJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "pending";
-                            else if(delayedJobs.keys[explodedKeys[1]] && delayedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "delayed";
+                            console.log(activeJobs, explodedKeys[1], typeof activeJobs.keys[explodedKeys[1]]);
+                            if(activeJobs.keys[explodedKeys[1]] && typeof activeJobs.keys[explodedKeys[1]].indexOf === "function" && activeJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "active";
+                            else if(completedJobs.keys[explodedKeys[1]] && typeof completedJobs.keys[explodedKeys[1]].indexOf === "function" && completedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "complete";
+                            else if(failedJobs.keys[explodedKeys[1]] && typeof failedJobs.keys[explodedKeys[1]].indexOf === "function" && failedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "failed";
+                            else if(pendingJobs.keys[explodedKeys[1]] && typeof pendingJobs.keys[explodedKeys[1]].indexOf === "function" && pendingJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "pending";
+                            else if(delayedJobs.keys[explodedKeys[1]] && typeof delayedJobs.keys[explodedKeys[1]].indexOf === "function" && delayedJobs.keys[explodedKeys[1]].indexOf(explodedKeys[2]) !== -1) status = "delayed";
                             keyList.push({id: explodedKeys[2], type: explodedKeys[1], status: status});
                         }
 
