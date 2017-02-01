@@ -33,7 +33,7 @@ Matador
             <td data-bind="text: type"></td>
             <td data-bind="text: status"></td>
             <td data-bind="visible: keys.length > 0 && keys[0].progress != undefined, text: keys[0].progress != undefined ? progress : ''"></td>
-            <td data-bind="visible: keys.length > 0 && keys[0].delayUntil != undefined, text: keys[0].delayUntil != undefined ? moment(new Date(delayUntil)).diff(moment(), 'seconds') + ' seconds' : ''"></td>
+            <td data-bind="visible: keys.length > 0 && keys[0].delayUntil != undefined, text: keys[0].delayUntil != undefined ? delayUntil : ''"></td>
             <td>
                 <button class="btn btn-default" data-bind="click: redisHandler.fn.deleteById" title="Delete">
                     <i class="fa fa-trash-o"></i>
