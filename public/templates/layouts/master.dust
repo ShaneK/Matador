@@ -21,7 +21,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="{basepath}/js/knockout.min.js"></script>
-	<script src="{basepath}/js/moment.min.js"></script>
+    <script src="{basepath}/js/moment.min.js"></script>
     <script src="{basepath}/js/jquery.blockUI.js"></script>
     <script src="{basepath}/js/jquery.noty.packaged.min.js"></script>
     <script src="{basepath}/js/bootstrap.min.js"></script>
