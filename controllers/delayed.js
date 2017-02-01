@@ -21,7 +21,7 @@ module.exports = function (app) {
 															formattedDelayUntil = 'in ' + numSecondsUntil + ' second';
 														}
 														else if (numSecondsUntil > 60) {
-															formattedDelayUntil = moment(new Date(key.delayUntil)).toNow();
+															formattedDelayUntil = moment(new Date(key.delayUntil)).fromNow();
 														}
 
 														key.delayUntil = formattedDelayUntil;
