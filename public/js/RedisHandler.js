@@ -23,7 +23,7 @@ var RedisHandler = function(){
             var type = o.type;
             _self.util.notyConfirm("Are you sure you want to delete the job of type "+ type + " with ID #"+id+"?", function(){
                 _self.util.blockUI();
-                $.getJSON(window.basepath + "/api/jobs/delete/id/"+type+"/"+id).done(function(response){
+                $.getJSON(window.basepath + "/api/jobs/delete/id/"+ encodeURIComponent(type) +"/"+id).done(function(response){
                     _self.util.handleAjaxResponse(response);
                     dataModel.fn.refreshViewModel(true);
                 }).always(function(){
@@ -32,6 +32,7 @@ var RedisHandler = function(){
             });
         },
         deleteByStatus: function(status, obj){
+            obj = obj || {};
             var queueName = obj.name;
             status = status.toLowerCase();
             var statusDisplay = status;
@@ -63,7 +64,7 @@ var RedisHandler = function(){
             var type = o.type;
             _self.util.notyConfirm("Are you sure you want make the job of type "+ type + " with ID #"+id+" pending? This will put this job in the queue to be run again.", function(){
                 _self.util.blockUI();
-                $.getJSON(window.basepath + "/api/jobs/pending/id/"+type+"/"+id).done(function(response){
+                $.getJSON(window.basepath + "/api/jobs/pending/id/"+encodeURIComponent(type)+"/"+id).done(function(response){
                     _self.util.handleAjaxResponse(response);
                     dataModel.fn.refreshViewModel(true);
                 }).always(function(){
@@ -75,7 +76,7 @@ var RedisHandler = function(){
             var id = o.id;
             var type = o.type;
             _self.util.blockUI();
-            $.getJSON(window.basepath + "/api/jobs/info/"+type+"/"+id).done(function(response){
+            $.getJSON(window.basepath + "/api/jobs/info/"+encodeURIComponent(type)+"/"+id).done(function(response){
                 if(response.success === false){
                     _self.util.handleAjaxResponse(response);
                 }else{
@@ -87,11 +88,19 @@ var RedisHandler = function(){
                     response.message.data = JSON.parse(response.message.data);
                     var data = JSON.stringify(response.message.data, null, 2);
                     var stacktrace = response.message.stacktrace;
+                    var returnvalue = response.message.returnvalue;
+
+                    try {
+                        returnvalue = JSON.stringify(JSON.parse(returnvalue), null, 2);
+                    } catch (e) {
+                        console.warn('Cannot prettify returnvalue', e);
+                    }
 
                     var message = '<pre style="text-align: left">Job ID: ' + id +
                         '\nType: ' + type +
                         '\nStatus: ' + o.status +
-                        '\n\nData: ' + data;
+                        '\n\nData: ' + data +
+                        '\n\nReturn value: ' + returnvalue;
 
                     if (stacktrace){
                         message = message + '\n\n<span style="color: red;">Stack Trace: \n' + stacktrace + '</span>' + '</pre>';

@@ -12,9 +12,11 @@ module.exports = function (app) {
             redisModel.getJobsInList(delayed).done(function(keys){
                 redisModel.formatKeys(keys).done(function(formattedKeys){
                     redisModel.getDelayTimeForKeys(formattedKeys).done(function(keyList){
-                        redisModel.getStatusCounts().done(function(countObject){
-                            var model = { keys: keyList, counts: countObject, delayed: true, type: "Delayed" };
-                            dfd.resolve(model);
+                        redisModel.getDataForKeys(keyList).done(function(keyList) {
+                            redisModel.getStatusCounts().done(function (countObject) {
+                                var model = {keys: keyList, counts: countObject, delayed: true, type: "Delayed"};
+                                dfd.resolve(model);
+                            });
                         });
                     });
                 });
