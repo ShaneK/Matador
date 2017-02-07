@@ -1,6 +1,6 @@
 {
   "name": "bull-ui",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Front-end web interface for Bull Job Manager",
   "main": "index.js",
   "dependencies": {
