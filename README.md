@@ -50,6 +50,10 @@ var matador = require('bull-ui/app')({
     host: your host name,
     port: your port number,
     password: optional auth password
+  },
+  auth: { // optional
+    username: 'admin',
+    password: 'password'
   }
 });
 ```
