@@ -253,8 +253,8 @@ var removeJobs = function(list){
         multi.push(["del", firstPartOfKey+list[i].id]);
         multi.push(["lrem", firstPartOfKey+"active", 0, list[i].id]);
         multi.push(["lrem", firstPartOfKey+"wait", 0, list[i].id]);
-        multi.push(["srem", firstPartOfKey+"completed", list[i].id]);
-        multi.push(["srem", firstPartOfKey+"failed", list[i].id]);
+        multi.push(["zrem", firstPartOfKey+"completed", list[i].id]);
+        multi.push(["zrem", firstPartOfKey+"failed", list[i].id]);
         multi.push(["zrem", firstPartOfKey+"delayed", list[i].id]);
 
     }
@@ -278,8 +278,8 @@ var makePendingByType = function(type){
                 var item = allKeys.keys[allKeyObjects[i]][k];
                 //Brute force remove from everything
                 multi.push(["lrem", firstPartOfKey+"active", 0, item]);
-                multi.push(["srem", firstPartOfKey+"completed", item]);
-                multi.push(["srem", firstPartOfKey+"failed", item]);
+                multi.push(["zrem", firstPartOfKey+"completed", item]);
+                multi.push(["zrem", firstPartOfKey+"failed", item]);
                 multi.push(["zrem", firstPartOfKey+"delayed", item]);
                 //Add to pending
                 multi.push(["rpush", firstPartOfKey+"wait", item]);
@@ -305,8 +305,8 @@ var makePendingById = function(type, id){
     var multi = [];
     multi.push(["lrem", firstPartOfKey+"active", 0, id]);
     multi.push(["lrem", firstPartOfKey+"wait", 0, id]);
-    multi.push(["srem", firstPartOfKey+"completed", id]);
-    multi.push(["srem", firstPartOfKey+"failed", id]);
+    multi.push(["zrem", firstPartOfKey+"completed", id]);
+    multi.push(["zrem", firstPartOfKey+"failed", id]);
     multi.push(["zrem", firstPartOfKey+"delayed", id]);
     //Add to pending
     multi.push(["rpush", firstPartOfKey+"wait", id]);
@@ -338,8 +338,8 @@ var deleteJobByStatus = function(type, queueName){
                 //Brute force remove from everything
                 multi.push(["lrem", firstPartOfKey+"active", 0, item]);
                 multi.push(["lrem", firstPartOfKey+"wait", 0, item]);
-                multi.push(["srem", firstPartOfKey+"completed", item]);
-                multi.push(["srem", firstPartOfKey+"failed", item]);
+                multi.push(["zrem", firstPartOfKey+"completed", item]);
+                multi.push(["zrem", firstPartOfKey+"failed", item]);
                 multi.push(["zrem", firstPartOfKey+"delayed", item]);
                 multi.push(["del", firstPartOfKey+item]);
             }
@@ -367,8 +367,8 @@ var deleteJobById = function(type, id){
     var multi = [];
     multi.push(["lrem", firstPartOfKey+"active", 0, id]);
     multi.push(["lrem", firstPartOfKey+"wait", 0, id]);
-    multi.push(["srem", firstPartOfKey+"completed", id]);
-    multi.push(["srem", firstPartOfKey+"failed", id]);
+    multi.push(["zrem", firstPartOfKey+"completed", id]);
+    multi.push(["zrem", firstPartOfKey+"failed", id]);
     multi.push(["zrem", firstPartOfKey+"delayed", id]);
     multi.push(["del", firstPartOfKey+id]);
     redis.multi(multi).exec(function(err, data){
