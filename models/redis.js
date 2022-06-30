@@ -98,7 +98,7 @@ var getStatus = function(status, queueName){
             statusKeys[queue] = []; // This creates an array/object thing with keys of the job type
             if(status === "active" || status === "wait"){
                 multi.push(['lrange', keys[i], 0, -1]);
-            }else if(status === "delayed"){
+            }else if(status === "delayed" || status === "complete" || status === "failed"){
                 multi.push(["zrange", keys[i], 0, -1]);
             }else{
                 multi.push(["smembers", keys[i]]);
@@ -254,8 +254,8 @@ var removeJobs = function(list){
         multi.push(["del", firstPartOfKey+list[i].id]);
         multi.push(["lrem", firstPartOfKey+"active", 0, list[i].id]);
         multi.push(["lrem", firstPartOfKey+"wait", 0, list[i].id]);
-        multi.push(["srem", firstPartOfKey+"completed", list[i].id]);
-        multi.push(["srem", firstPartOfKey+"failed", list[i].id]);
+        multi.push(["zrem", firstPartOfKey+"completed", list[i].id]);
+        multi.push(["zrem", firstPartOfKey+"failed", list[i].id]);
         multi.push(["zrem", firstPartOfKey+"delayed", list[i].id]);
 
     }
@@ -279,8 +279,8 @@ var makePendingByType = function(type){
                 var item = allKeys.keys[allKeyObjects[i]][k];
                 //Brute force remove from everything
                 multi.push(["lrem", firstPartOfKey+"active", 0, item]);
-                multi.push(["srem", firstPartOfKey+"completed", item]);
-                multi.push(["srem", firstPartOfKey+"failed", item]);
+                multi.push(["zrem", firstPartOfKey+"completed", item]);
+                multi.push(["zrem", firstPartOfKey+"failed", item]);
                 multi.push(["zrem", firstPartOfKey+"delayed", item]);
                 //Add to pending
                 multi.push(["rpush", firstPartOfKey+"wait", item]);
@@ -306,8 +306,8 @@ var makePendingById = function(type, id){
     var multi = [];
     multi.push(["lrem", firstPartOfKey+"active", 0, id]);
     multi.push(["lrem", firstPartOfKey+"wait", 0, id]);
-    multi.push(["srem", firstPartOfKey+"completed", id]);
-    multi.push(["srem", firstPartOfKey+"failed", id]);
+    multi.push(["zrem", firstPartOfKey+"completed", id]);
+    multi.push(["zrem", firstPartOfKey+"failed", id]);
     multi.push(["zrem", firstPartOfKey+"delayed", id]);
     //Add to pending
     multi.push(["rpush", firstPartOfKey+"wait", id]);
@@ -339,8 +339,8 @@ var deleteJobByStatus = function(type, queueName){
                 //Brute force remove from everything
                 multi.push(["lrem", firstPartOfKey+"active", 0, item]);
                 multi.push(["lrem", firstPartOfKey+"wait", 0, item]);
-                multi.push(["srem", firstPartOfKey+"completed", item]);
-                multi.push(["srem", firstPartOfKey+"failed", item]);
+                multi.push(["zrem", firstPartOfKey+"completed", item]);
+                multi.push(["zrem", firstPartOfKey+"failed", item]);
                 multi.push(["zrem", firstPartOfKey+"delayed", item]);
                 multi.push(["del", firstPartOfKey+item]);
             }
@@ -368,8 +368,8 @@ var deleteJobById = function(type, id){
     var multi = [];
     multi.push(["lrem", firstPartOfKey+"active", 0, id]);
     multi.push(["lrem", firstPartOfKey+"wait", 0, id]);
-    multi.push(["srem", firstPartOfKey+"completed", id]);
-    multi.push(["srem", firstPartOfKey+"failed", id]);
+    multi.push(["zrem", firstPartOfKey+"completed", id]);
+    multi.push(["zrem", firstPartOfKey+"failed", id]);
     multi.push(["zrem", firstPartOfKey+"delayed", id]);
     multi.push(["del", firstPartOfKey+id]);
     redis.multi(multi).exec(function(err, data){
@@ -482,8 +482,8 @@ var getQueues = function(){
         });
         var pending = redis.llenAsync(name + ":wait");
         var delayed = redis.zcardAsync(name + ":delayed");
-        var completed = redis.scardAsync(name + ":completed");
-        var failed = redis.scardAsync(name + ":failed");
+        var completed = redis.zcountAsync(name + ":completed", '-inf', '+inf');
+        var failed = redis.zcountAsync(name + ":failed", '-inf', '+inf');
         return Promise.join (active, stalled, pending, delayed, completed, failed, function(active, stalled, pending, delayed, completed, failed) {
           return {
             name: name.substring(5),
