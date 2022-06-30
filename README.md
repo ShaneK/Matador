@@ -54,6 +54,16 @@ var matador = require('bull-ui/app')({
 });
 ```
 
+Or use a URL:
+
+```js
+var matador = require('bull-ui/app')({
+  redis: {
+    url: "redis://u:password@hostname",
+  }
+});
+```
+
 If you are including matador inside of another express app, declare the basepath when you mount it to the other app.
 
 ```js
