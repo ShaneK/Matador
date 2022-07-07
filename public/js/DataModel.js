@@ -42,6 +42,8 @@ var DataModel = function(){
 			};
 
 			var counter = 0;
+			refresh();
+
 			var refreshTimer = function(pollInterval) {
 				if (paused) return;
 
