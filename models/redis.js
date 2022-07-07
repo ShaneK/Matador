@@ -98,7 +98,7 @@ var getStatus = function(status, queueName){
             statusKeys[queue] = []; // This creates an array/object thing with keys of the job type
             if(status === "active" || status === "wait"){
                 multi.push(['lrange', keys[i], 0, -1]);
-            }else if(status === "delayed" /* || status === "complete" || status === "failed" // bull 3.x */){
+            }else if(status === "delayed" || status === "complete" || status === "failed"){
                 multi.push(["zrange", keys[i], 0, -1]);
             }else{
                 multi.push(["smembers", keys[i]]);
@@ -482,14 +482,8 @@ var getQueues = function(){
         });
         var pending = redis.llenAsync(name + ":wait");
         var delayed = redis.zcardAsync(name + ":delayed");
-
-        // for bull 3.x
-        // var completed = redis.zcountAsync(name + ":completed", '-inf', '+inf');
-        // var failed = redis.zcountAsync(name + ":failed", '-inf', '+inf');
-
-        var completed = redis.scardAsync(name + ":completed");
-        var failed = redis.scardAsync(name + ":failed");
-
+        var completed = redis.zcountAsync(name + ":completed", '-inf', '+inf');
+        var failed = redis.zcountAsync(name + ":failed", '-inf', '+inf');
         return Promise.join (active, stalled, pending, delayed, completed, failed, function(active, stalled, pending, delayed, completed, failed) {
           return {
             name: name.substring(5),
