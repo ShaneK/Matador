@@ -74,6 +74,10 @@
                 <li {?delayed}class="active"{/delayed}><a href="{basepath}/delayed">Delayed<span data-bind="visible: delayed() != null, text: delayed"></span></a></li>
                 <li {?queues}class="active"{/queues}><a href="{basepath}/queues">Queues<span data-bind="visible: queues() != null, text: queues"></span></a></li>
                 <li {?newjob}class="active"{/newjob}><a href="{basepath}/newjob">New Job</a></li>
+                <li style="text-align: center">
+                    <progress data-bind="visible: !fetchingUpdates(), attr: { value: refreshTimeout() }" style="width: 50%; height: 10px;"></progress>
+                    <div data-bind="visible: fetchingUpdates()">Fetching updates...</div>
+                </li>
             </ul>
         </div>
 
